@@ -4,5 +4,5 @@ import com.paymybuddy.webapp.model.PMBUser;
 
 public interface UserService {
 
-    PMBUser getByUsername(String username);
+   PMBUser getByEmail(String email);
 }

@@ -21,15 +21,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) {
-        PMBUser PMBUser = userService.getByUsername(username);
+    public UserDetails loadUserByUsername(String email) {
+        PMBUser PMBUser = userService.getByEmail(email);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
         return buildUserForAuthentication(PMBUser, grantedAuthorities);
     }
 
     private UserDetails buildUserForAuthentication(PMBUser PMBUser, Set<GrantedAuthority> authorities) {
-        return new org.springframework.security.core.userdetails.User(PMBUser.getUsername(), PMBUser.getPassword(),
+        return new org.springframework.security.core.userdetails.User(PMBUser.getEmail(), PMBUser.getPassword(),
                 true, true, true, true, authorities);
     }
 }

@@ -25,7 +25,6 @@ public class PMBUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     @Column(unique = true)
-    private String username;
     private String email;
     private String firstName;
     private String lastName;

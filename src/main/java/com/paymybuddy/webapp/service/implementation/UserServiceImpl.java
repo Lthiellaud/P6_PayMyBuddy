@@ -1,7 +1,7 @@
 package com.paymybuddy.webapp.service.implementation;
 
 import com.paymybuddy.webapp.model.PMBUser;
-import com.paymybuddy.webapp.repository.UserRepository;
+import com.paymybuddy.webapp.repository.PMBUserRepository;
 import com.paymybuddy.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private PMBUserRepository PMBUserRepository;
 
 
     @Override
-    public PMBUser getByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+    public PMBUser getByEmail(String email) {
+        return PMBUserRepository.findUserByEmail(email);
     }
 }
