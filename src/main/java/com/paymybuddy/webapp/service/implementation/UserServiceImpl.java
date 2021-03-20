@@ -1,6 +1,6 @@
 package com.paymybuddy.webapp.service.implementation;
 
-import com.paymybuddy.webapp.model.User;
+import com.paymybuddy.webapp.model.PMBUser;
 import com.paymybuddy.webapp.repository.UserRepository;
 import com.paymybuddy.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getByUsername(String username) {
+    public PMBUser getByUsername(String username) {
         return userRepository.findUserByUsername(username);
     }
 }

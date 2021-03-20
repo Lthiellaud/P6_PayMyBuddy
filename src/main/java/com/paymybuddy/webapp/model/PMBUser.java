@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * User class contains the user information.
+ * PMBUser class contains the Pay My Buddy user information.
  *  UserId, email (unique), firstname, lastname and balance (available amount)
  */
 @Entity
@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="Users")
-public class User implements Serializable {
+public class PMBUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
