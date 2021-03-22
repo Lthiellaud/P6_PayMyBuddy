@@ -7,7 +7,6 @@ import com.paymybuddy.webapp.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +18,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> getTransactions(List<Connexion> connexions) {
-        List<Transaction> transactions = new ArrayList<>();
-        transactions = transactionRepository
+        List<Transaction> transactions = transactionRepository
                 .findAllByConnexionInOrderByTransactionDateDesc(connexions);
+
         return transactions;
     }
 
