@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,6 +10,16 @@
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
 </head>
 <body>
-    <p>"Welcome User"</p>
+<!-- Include _navigation.html -->
+<th:block th:include="/_navigation"></th:block>
+
+<div class="d-grid gap-2 col-6 mx-auto">
+    <h3 th:if="${welcome != null}" th:utext="${welcome}"></h3>
+    <h3 th:if="${balance != null}" th:utext="${balance}"></h3>
+</div>
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-primary" href="/home/transfer" role="button">transfer money</a>
+    
+</div>
 </body>
 </html>

@@ -32,15 +32,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
+                .antMatchers("/home**").permitAll()//.hasRole("USER")
                 .antMatchers("/", "/login", "/logout").permitAll()
-                .antMatchers("/user", "/home").hasRole("USER")
                 .anyRequest().authenticated()
-                .and().exceptionHandling().accessDeniedPage("/403")
                 .and()
                 .formLogin()
                     .loginPage("/login")
                     .usernameParameter("email")
                     .defaultSuccessUrl("/home",true)
+                .and().exceptionHandling().accessDeniedPage("/403")
         ;
     }
 
