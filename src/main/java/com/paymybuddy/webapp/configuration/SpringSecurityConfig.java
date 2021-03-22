@@ -33,7 +33,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/", "/login", "/logout").permitAll()
-                .antMatchers("/user", "/home").hasRole("USER")
+                .antMatchers("/user", "/home").permitAll()//.hasRole("USER")
                 .anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedPage("/403")
                 .and()

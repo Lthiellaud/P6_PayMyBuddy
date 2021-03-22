@@ -1,7 +1,7 @@
 package com.paymybuddy.webapp.service.implementation;
 
 import com.paymybuddy.webapp.model.PMBUser;
-import com.paymybuddy.webapp.service.UserService;
+import com.paymybuddy.webapp.service.PMBUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,12 +17,12 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserService userService;
+    private PMBUserService PMBUserService;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) {
-        PMBUser PMBUser = userService.getByEmail(email);
+        PMBUser PMBUser = PMBUserService.getByEmail(email);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
         return buildUserForAuthentication(PMBUser, grantedAuthorities);

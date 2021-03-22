@@ -30,5 +30,17 @@ public class PMBUser implements Serializable {
     private String lastName;
     private String password;
 
+    private Double balance;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Connexion> connexions;
+
+    @OneToMany(mappedBy = "beneficiaryUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Connexion> beneficiaryConnexions;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Rib> ribs;
+
+
 
 }

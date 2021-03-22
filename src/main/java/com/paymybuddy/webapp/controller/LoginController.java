@@ -3,7 +3,11 @@ package com.paymybuddy.webapp.controller;
 
 import javax.annotation.security.RolesAllowed;
 
+import com.paymybuddy.webapp.model.PMBUser;
+import com.paymybuddy.webapp.service.ConnexionService;
+import com.paymybuddy.webapp.service.PMBUserService;
 import com.paymybuddy.webapp.util.UserUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -15,13 +19,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.security.Principal;
 
 @Controller
-public class LoginController
+public class LoginController {
 
-{
+    @Autowired
+    private PMBUserService pmbUserService;
+
+
     @RolesAllowed("USER")
     @GetMapping("/home")
-    public String getUser()
+    public String getUser(Model model)
     {
+        PMBUser user = pmbUserService.getCurrentUser();
+        String welcome = "Hello " + user.getFirstName() + " " + user.getLastName();
+        String balance ="You have " + user.getBalance() + " € on your account";
+        model.addAttribute("welcome", welcome);
+        model.addAttribute("balance", balance);
+        //System.out.println(welcome);
         return "home";
     }
 
@@ -46,7 +59,7 @@ public class LoginController
 
             model.addAttribute("userInfo", userInfo);
 
-            String message = "Hi " + principal.getName() //
+            String message = "Hello " + principal.getName() + "/n" //
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
 
