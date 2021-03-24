@@ -57,12 +57,11 @@
 
 <div class="container special">
 
-	<h3 th:if="${message != null}" th:utext="${message}" style="color: #522586;"></h3>
+	<h3 th:if="${welcome != null}" th:utext="${welcome}"></h3>
+	<h3 th:if="${balance != null}" th:utext="${balance}"></h3>
+
 	<p></p>
-	Authenticated username:
-	<div sec:authentication="name"></div>
-	Authenticated user roles:
-	<div sec:authentication="principal.authorities"></div>
+	<a class="btn btn-primary" href="/home/transfer" role="button">transfer money</a>
 
 
 </div>

@@ -14,7 +14,6 @@ public class PMBUserServiceImpl implements PMBUserService {
     @Autowired
     private PMBUserRepository PMBUserRepository;
 
-
     @Override
     public PMBUser getByEmail(String email) {
         return PMBUserRepository.findUserByEmail(email);

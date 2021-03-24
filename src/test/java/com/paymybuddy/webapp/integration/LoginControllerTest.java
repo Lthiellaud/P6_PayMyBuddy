@@ -1,5 +1,6 @@
 package com.paymybuddy.webapp.integration;
 
+import com.paymybuddy.webapp.service.PMBUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ public class LoginControllerTest {
     @Autowired
     private WebApplicationContext context;
 
+    @Autowired
+    private PMBUserService pmbUserService;
+
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
@@ -43,9 +47,8 @@ public class LoginControllerTest {
     }
 
     @Test
-    @Disabled
     public void userLoginTest() throws Exception {
-        mvc.perform(formLogin("/login").user("lol.buddy@mail.com").password("buddy1"))
+        mvc.perform(formLogin("/login").user("email","lol.buddy@mail.com").password("buddy1"))
                 .andExpect(authenticated());
     }
 }

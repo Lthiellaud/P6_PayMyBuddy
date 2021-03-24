@@ -35,7 +35,7 @@ public class LoginController {
         model.addAttribute("welcome", welcome);
         model.addAttribute("balance", balance);
         //System.out.println(welcome);
-        return "home";
+        return "homePage";
     }
 
 
@@ -59,7 +59,7 @@ public class LoginController {
 
             model.addAttribute("userInfo", userInfo);
 
-            String message = "Hello " + principal.getName() + "/n" //
+            String message = "Hello " + principal.getName()  //
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
 
