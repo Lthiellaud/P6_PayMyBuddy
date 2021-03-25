@@ -7,5 +7,5 @@ public class TransferDTO {
 
     private Long connexionId;
     private String description;
-    private Double amount;
+    private double amount;
 }

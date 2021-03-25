@@ -9,8 +9,9 @@ import java.util.Optional;
 public interface ConnexionService {
 
     List<Connexion> getConnexionsByUser(PMBUser user);
-    Optional<Connexion> createConnexion(Connexion connexion);
+
+    Connexion createConnexion(Connexion connexion);
 
 
-
+    Optional<Connexion> getById(Long connexionId);
 }

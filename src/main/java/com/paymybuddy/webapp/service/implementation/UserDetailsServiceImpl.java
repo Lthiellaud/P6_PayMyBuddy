@@ -17,12 +17,12 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private PMBUserService PMBUserService;
+    private PMBUserService pmbUserService;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) {
-        PMBUser PMBUser = PMBUserService.getByEmail(email);
+        PMBUser PMBUser = pmbUserService.getByEmail(email);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
         return buildUserForAuthentication(PMBUser, grantedAuthorities);

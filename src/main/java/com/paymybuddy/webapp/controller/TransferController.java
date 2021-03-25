@@ -31,7 +31,7 @@ public class TransferController {
 
     @RolesAllowed("USER")
     @GetMapping("/home/transfer")
-    public String getTransferPage(Model model, Principal principal) {
+    public String getTransferPage(Model model) {
         List<Connexion> connexions = transferService.getUserConnexion();
         System.out.println(connexions.size());
         List<Transaction> transactions = transactionService.getTransactions(connexions);
@@ -45,8 +45,10 @@ public class TransferController {
     @RolesAllowed("USER")
     @PostMapping("/home/transfer")
     public ModelAndView transferMoney(@ModelAttribute TransferDTO transfer) {
-        System.out.println(transfer.getDescription());
-        return new ModelAndView("/home/transfer");
+        System.out.println(transfer.getConnexionId() + " " + transfer.getDescription()
+                + " " + transfer.getAmount());
+        transferService.processTransfer(transfer);
+        return new ModelAndView("/home");
     }
 
 }

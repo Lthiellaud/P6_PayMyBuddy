@@ -30,7 +30,7 @@ public class PMBUser implements Serializable {
     private String lastName;
     private String password;
 
-    private Double balance;
+    private double balance;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Connexion> connexions;
