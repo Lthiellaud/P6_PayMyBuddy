@@ -65,25 +65,27 @@
 	<div class="container special bg-light">
 		<div class="col mx-auto">
 			<form method="post"
-				  th:action="@{/transfer}" th:object="${transfer}">
+				  th:action="@{/home/transfer}" th:object="${transfer}">
 				<div class="row">
 					<div class="col-md-2">
-						<select class="form-select" id="connexion" required >
-							<option selected>Select a connection</option>
-							<option th:each="connexion: ${connexions}" th:value="${connexion.connexionId}" th:text="${connexion.connexionName}"></option>
-							<option></option>
+						<label for="connexion">Beneficiary</label>
+						<select class="form-select" th:field="*{connexionId}" id="connexion" required >
+							<option th:each="connexion: ${connexions}"
+									th:value="${connexion.connexionId}"
+									th:text="${connexion.connexionName}"></option>
 						</select>
 						<div class="invalid-feedback">
 							Please select a valid connection.
 						</div>
 					</div>
 					<div class="col-md-4">
-						<input type="text" class="form-control" id="descriptionInput"
+						<label for="descriptionInput">Description</label>
+						<input type="text" th:field="*{description}" class="form-control" id="descriptionInput"
 						       placeholder="Description">
 					</div>
 					<div class="col-md-3">
 					  <span class="input-symbol-euro">
-						<input type="number" step="0.01" value="0.00" min="0" >
+						<input type="number" th:field="*{amount}" step="0.01" value="0.00" min="0" >
 					  </span>
 						<div class="invalid-feedback">
 							Please provide a valid amount.

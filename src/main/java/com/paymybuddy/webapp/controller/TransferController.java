@@ -38,11 +38,12 @@ public class TransferController {
         System.out.println(transactions.size());
         model.addAttribute("connexions", connexions);
         model.addAttribute("transactions", transactions);
+        model.addAttribute("transfer", new TransferDTO());
         return "transferPage";
     }
 
     @RolesAllowed("USER")
-    @PostMapping("/transfer")
+    @PostMapping("/home/transfer")
     public ModelAndView transferMoney(@ModelAttribute TransferDTO transfer) {
         System.out.println(transfer.getDescription());
         return new ModelAndView("/home/transfer");
