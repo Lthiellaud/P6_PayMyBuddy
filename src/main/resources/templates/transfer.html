@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhml"
-	  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,19 +49,20 @@
 
 <div class="container special">
 
-	<div class="col-md-4 col-lg-12 mx-auto bg-light">
-		<div class="row align-items-center">
+	<div class="col mx-auto bg-light">
+		<div class="row">
 			<div class="col-md-4">
 				<h3 class="h3">Send Money</h3>
 			</div>
 			<div class="col-md-5"></div>
 			<div class="col-md-2">
-				<a class="btn btn-primary btn-sm w-100" href="/home/connexion" role="button">Add Connection</a>
+				<label for="button1" class="visually-hidden">New beneficiary ?</label>
+				<a class="btn btn-primary btn-sm w-100" href="/home/connexion" role="button" id="button1">Add Connection</a>
 			</div>
 		</div>
 	</div>
 	<p> </p>
-	<div class="container special bg-light">
+	<div class="container special">
 		<div class="col mx-auto">
 			<form method="post"
 				  th:action="@{/home/transfer}" th:object="${transfer}">
@@ -70,12 +70,13 @@
 					<div class="col-md-2">
 						<label for="connexion">Beneficiary</label>
 						<select class="form-select" th:field="*{connexionId}" id="connexion" required >
+							<option selected="selected" value="0">Select a connexion</option>
 							<option th:each="connexion: ${connexions}"
 									th:value="${connexion.connexionId}"
 									th:text="${connexion.connexionName}"></option>
 						</select>
-						<div class="invalid-feedback">
-							Please select a valid connection.
+						<div style="color: red;" th:if="${#fields.hasErrors('connexionId')}" th:errors="*{connexionId}">
+							Connexion Error
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -84,15 +85,15 @@
 						       placeholder="Description">
 					</div>
 					<div class="col-md-3">
+					  <label for="amount">Amount</label>
 					  <span class="input-symbol-euro">
-						<input type="number" th:field="*{amount}" step="0.01" value="0.00" min="0" >
+						<input type="number" th:field="*{amount}" step="0.01" value="0.00" min="0" id="amount">
 					  </span>
-						<div class="invalid-feedback">
-							Please provide a valid amount.
-						</div>
+
 					</div>
 					<div class="col-md-2">
-						<button type="submit" class="btn btn-success btn-sm btn-block">Pay</button>
+						<label for="button"> </label>
+						<button type="submit" class="btn btn-success btn-sm btn-block" id="button">Pay</button>
 					</div>
 				</div>
 			</form>
@@ -110,7 +111,7 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr th:if="${transactions.empty}">
+				<tr th:if="${#lists.isEmpty(transactions)}">
 					<td colspan="3">Aucune transaction enregistrée</td>
 				</tr>
 				<tr th:each="transaction: ${transactions}">
