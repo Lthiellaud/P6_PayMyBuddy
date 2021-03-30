@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 public class PMBUserServiceImpl implements PMBUserService {
 
     @Autowired
-    private PMBUserRepository PMBUserRepository;
+    private PMBUserRepository pmbUserRepository;
 
     @Override
     public PMBUser getByEmail(String email) {
-        return PMBUserRepository.findUserByEmail(email);
+        return pmbUserRepository.findUserByEmail(email);
     }
 
     @Override
@@ -29,6 +29,10 @@ public class PMBUserServiceImpl implements PMBUserService {
         } else {
             return null;
         }
+    }
 
+    @Override
+    public PMBUser saveUser(PMBUser user) {
+        return pmbUserRepository.save(user);
     }
 }

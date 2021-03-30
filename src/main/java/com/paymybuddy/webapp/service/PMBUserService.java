@@ -6,4 +6,6 @@ public interface PMBUserService {
 
    PMBUser getByEmail(String email);
    PMBUser getCurrentUser();
+
+    PMBUser saveUser(PMBUser user);
 }

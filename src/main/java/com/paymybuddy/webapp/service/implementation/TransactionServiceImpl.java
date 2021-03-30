@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -25,7 +24,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Optional<Transaction> createTransaction() {
-        return Optional.empty();
+    public Transaction createTransaction(Transaction transaction) {
+        return transactionRepository.save(transaction);
     }
 }

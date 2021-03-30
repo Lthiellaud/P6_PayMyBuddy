@@ -23,7 +23,13 @@ public class ConnexionServiceImpl implements ConnexionService {
     }
 
     @Override
-    public Optional<Connexion> createConnexion(Connexion connexion) {
-        return Optional.empty();
+    public Connexion createConnexion(Connexion connexion) {
+        return null;
     }
+
+    @Override
+    public Optional<Connexion> getById(Long connexionId) {
+        return connexionRepository.findById(connexionId);
+    }
+
 }
