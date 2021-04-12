@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,13 +20,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PMBUserService pmbUserService;
 
+    //TODO add log - remove sysout
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) {
-        PMBUser PMBUser = pmbUserService.getByEmail(email);
+        PMBUser pmbUser = pmbUserService.getByEmail(email);
+        if (pmbUser == null) {
+            System.out.println("User not found! " + email);
+            throw new UsernameNotFoundException("User with email " + email + " not found in the database");
+        }
+
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
-        return buildUserForAuthentication(PMBUser, grantedAuthorities);
+        return buildUserForAuthentication(pmbUser, grantedAuthorities);
     }
 
     private UserDetails buildUserForAuthentication(PMBUser PMBUser, Set<GrantedAuthority> authorities) {

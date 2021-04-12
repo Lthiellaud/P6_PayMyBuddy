@@ -47,11 +47,10 @@ public class TransferServiceTest {
         user.setEmail("user@mail.com");
         user.setBalance(40.0);
         Set<Connexion> connexions = new HashSet<>();
-        connexions.add(connexion);
-        user.setConnexions(connexions);
+
 
         beneficiary = new PMBUser();
-        beneficiary.setUserId(1L);
+        beneficiary.setUserId(2L);
         beneficiary.setEmail("beneficiary@mail.com");
         beneficiary.setBalance(40.0);
         beneficiary.setConnexions(connexions);
@@ -67,17 +66,10 @@ public class TransferServiceTest {
         connexion.setUser(user);
         connexion.setConnexionName("The connexion");
 
+        //ajouter la connexion à user
+        connexions.add(connexion);
+        user.setConnexions(connexions);
 }
-
-    @Test
-    public void getUserConnexionTest() {
-        List<Connexion> connexions = new ArrayList<>(user.getConnexions());
-        when(pmbUserService.getCurrentUser()).thenReturn(user);
-        when(connexionService.getConnexionsByUser(user)).thenReturn(connexions);
-
-        assertThat(transferService.getUserConnexion().size()).isEqualTo(1);
-
-    }
 
     @Test
     public void processTransferTest() {

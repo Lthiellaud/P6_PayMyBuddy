@@ -1,38 +1,37 @@
-package com.paymybuddy.webapp.integration;
+package com.paymybuddy.webapp.service;
 
 import com.paymybuddy.webapp.model.Connexion;
 import com.paymybuddy.webapp.model.DTO.TransferDTO;
 import com.paymybuddy.webapp.model.PMBUser;
-import com.paymybuddy.webapp.model.constants.Response;
-import com.paymybuddy.webapp.service.ConnexionService;
-import com.paymybuddy.webapp.service.PMBUserService;
-import com.paymybuddy.webapp.service.TransactionService;
-import com.paymybuddy.webapp.service.TransferService;
+import com.paymybuddy.webapp.service.implementation.PMBSharedServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class TransferServiceIT {
+public class PMBSharedServiceTest {
+
     @MockBean
     private PMBUserService pmbUserService;
 
     @MockBean
     private ConnexionService connexionService;
 
-    @Autowired
-    private TransactionService transactionService;
+    @MockBean
+    private  TransactionService transactionService;
 
     @Autowired
-    private TransferService transferService;
+    private PMBSharedServiceImpl pmbSharedService;
 
     private static PMBUser user;
     private static PMBUser beneficiary;
@@ -45,11 +44,14 @@ public class TransferServiceIT {
         user.setUserId(1L);
         user.setEmail("user@mail.com");
         user.setBalance(40.0);
+        Set<Connexion> connexions = new HashSet<>();
+
 
         beneficiary = new PMBUser();
         beneficiary.setUserId(2L);
         beneficiary.setEmail("beneficiary@mail.com");
         beneficiary.setBalance(40.0);
+        beneficiary.setConnexions(connexions);
 
         transferDTO = new TransferDTO();
         transferDTO.setConnexionId(1L);
@@ -62,24 +64,19 @@ public class TransferServiceIT {
         connexion.setUser(user);
         connexion.setConnexionName("The connexion");
 
-        Set<Connexion> connexions = new HashSet<>();
+        //ajouter la connexion à user
         connexions.add(connexion);
         user.setConnexions(connexions);
-
-
     }
 
     @Test
-    public void registerTransferThrowExceptionOnUserSaveTest() throws Exception {
-        //Response TransferDTO transferDTO, Connexion connexion
-        when(pmbUserService.saveUser(user)).thenReturn(user);
-        when(pmbUserService.saveUser(beneficiary)).thenThrow(RuntimeException.class);
+    public void getUserConnexionTest() {
+        List<Connexion> connexions = new ArrayList<>(user.getConnexions());
+        when(pmbUserService.getCurrentUser()).thenReturn(user);
+        when(connexionService.getConnexionsByUser(user)).thenReturn(connexions);
 
-        Response response = transferService.registerTransfer(transferDTO, connexion);
-
-        assertThat(response).isEqualTo(Response.SAVE_KO);
+        assertThat(pmbSharedService.getUserConnexion().size()).isEqualTo(1);
 
     }
-
 
 }

@@ -1,10 +1,7 @@
 package com.paymybuddy.webapp.controller;
 
 
-import javax.annotation.security.RolesAllowed;
-
 import com.paymybuddy.webapp.model.PMBUser;
-import com.paymybuddy.webapp.service.ConnexionService;
 import com.paymybuddy.webapp.service.PMBUserService;
 import com.paymybuddy.webapp.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.security.RolesAllowed;
 import java.security.Principal;
 
 @Controller
@@ -25,7 +24,6 @@ public class LoginController {
     private PMBUserService pmbUserService;
 
 
-    @RolesAllowed("USER")
     @GetMapping("/home")
     public String getUser(Model model)
     {
@@ -38,8 +36,7 @@ public class LoginController {
         return "homePage";
     }
 
-
-    @GetMapping("/login")
+   @GetMapping("/login")
     public String login(Model model) {
         return "loginPage";
     }

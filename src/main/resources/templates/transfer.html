@@ -83,13 +83,18 @@
 						<label for="descriptionInput">Description</label>
 						<input type="text" th:field="*{description}" class="form-control" id="descriptionInput"
 						       placeholder="Description">
+						<div style="color: red;" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+							Description Error
+						</div>
 					</div>
 					<div class="col-md-3">
 					  <label for="amount">Amount</label>
 					  <span class="input-symbol-euro">
 						<input type="number" th:field="*{amount}" step="0.01" value="0.00" min="0" id="amount">
 					  </span>
-
+					  <div style="color: red;" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">
+							Amount Error
+					  </div>
 					</div>
 					<div class="col-md-2">
 						<label for="button"> </label>

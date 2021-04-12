@@ -32,7 +32,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/home/**", "/home").permitAll()//.hasRole("USER") //
+             //   .antMatchers("/home/**", "/home").permitAll()//.hasRole("USER") //
                 .antMatchers("/", "/login", "/logout", "/403").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -40,7 +40,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .usernameParameter("email")
                     .defaultSuccessUrl("/home",true)
+                    .failureUrl("/login?error=true")
+
                 .and().exceptionHandling().accessDeniedPage("/403")
+
+                .and().logout().deleteCookies("JSESSIONID")
+
+                .and().rememberMe().key("uniqueAndSecretForPayMyBuddy")
         ;
     }
 

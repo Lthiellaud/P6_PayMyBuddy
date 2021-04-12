@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet"
+		  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+		  crossorigin="anonymous">
+
+	<link rel="stylesheet"
+		  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+		  integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+		  crossorigin="anonymous">
+
+	<title>Pay My Buddy</title>
+
+	<style>
+		body {
+			padding-top: 50px;
+		}
+		.special {
+			padding-top:50px;
+		}
+		.container {
+			max-width: 960px;
+		}
+
+	</style>
+</head>
+<body>
+	<!-- Include _navigation.html -->
+	<th:block th:include="/_navigation"></th:block>
+
+
+	<div class="container special">
+		<h3 class="h3">New beneficiary ? Add a connexion</h3>
+		<div>
+			<form method="post"
+			  	th:action="@{/home/connexion}" th:object="${connexionDTO}">
+				<div class="form-group">
+					<label for="connexionName">Connexion Name </label>
+					<input type="text" th:field="*{connexionName}" class="form-control" id="connexionName"
+						   aria-describedby="nameHelp" placeholder="Connexion name"> <small
+						id="nameHelp" class="form-text text-muted">The name you will use to find this beneficiary.</small>
+					<div style="color: red;" th:if="${#fields.hasErrors('connexionName')}" th:errors="*{connexionName}">
+						Connexion name Error
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="mailInput">Email</label>
+					<input
+							type="text" th:field="*{connexionMail}" class="form-control" id="mailInput"
+							aria-describedby="mailHelp" placeholder="email"> <small
+						id="mailHelp" class="form-text text-muted">Enter the email of your new beneficiary.</small>
+					<div style="color: red;" th:if="${#fields.hasErrors('connexionMail')}" th:errors="*{connexionMail}">
+						Connexion mail Error
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Create</button>
+			</form>
+		</div>
+		<p></p>
+		<h3 class="h3">Your connexions</h3>
+		<div class="table-responsive border border-dark">
+			<table class="table table-striped table-sm">
+				<thead class="text-white bg-success">
+				<tr>
+					<th>Connexion name</th>
+					<th>Beneficiary email</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:if="${#lists.isEmpty(connexions)}">
+					<td colspan="3">No connexion registered</td>
+				</tr>
+				<tr th:each="connexion: ${connexions}">
+					<td><span th:text="${connexion.connexionName}"> Connexion </span></td>
+					<td><span th:text="${connexion.beneficiaryUser.email}"> Email </span></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+</body>
+</html>

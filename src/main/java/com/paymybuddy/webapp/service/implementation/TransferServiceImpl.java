@@ -31,14 +31,6 @@ public class TransferServiceImpl implements TransferService {
     private TransactionService transactionService;
 
     @Override
-    public List<Connexion> getUserConnexion() {
-        PMBUser user = pmbUserService.getCurrentUser();
-        List<Connexion> connexions = connexionService.getConnexionsByUser(user);
-
-        return connexions;
-    }
-
-    @Override
     public Response processTransfer(TransferDTO transferDTO) {
         Response response = null;
         Optional<Connexion> c = connexionService.getById(transferDTO.getConnexionId());
