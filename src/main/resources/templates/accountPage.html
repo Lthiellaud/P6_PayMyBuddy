@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
+
+    <title>Pay My Buddy</title>
+
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .special {
+            padding-top:50px;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .navbar-nav {
+            float: right;
+            margin: 15px;
+        }
+        .navbar-nav>li {
+            float: left;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+        .input-symbol-euro {
+            position: relative;
+        }
+        .input-symbol-euro input {
+            text-align: center;
+            /*padding-left:100px*/
+        }
+        .input-symbol-euro:after {
+            position: absolute;
+            top: 0;
+            content: "€";
+            right: 70px;
+        }
+        ul {
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+<!-- Include _navigation.html -->
+<th:block th:include="/_navigation"></th:block>
+
+
+<div class="container special">
+    <div class="container special">
+        <h3 class="col-md-4">Manage my account</h3>
+        <div class="col-md-6"></div>
+        <div class="col-md-2">
+            <label for="button1" class="visually-hidden">New bank account</label>
+            <a class="btn btn-primary btn-sm w-100" href="/home/rib" role="button" id="button1">Add a bank account</a>
+        </div>
+        <p> </p>
+        <p class="col-md-12" th:if="${balance != null}" th:utext="${balance}">Balance</p>
+    </div>
+    <div class="container special">
+        <form method="post"
+              th:action="@{/home/account}" th:object="${operationDTO}">
+            <div class="col-md-3">
+                <label for="rib">Bank account</label>
+                <select class="form-select" th:field="*{ribId}" id="rib" required >
+                    <option selected="selected" value="0">Select a bank account</option>
+                    <option th:each="rib: ${ribs}"
+                            th:value="${rib.ribId}"
+                            th:text="${rib.ribName}"></option>
+                </select>
+                <div style="color: red;" th:if="${#fields.hasErrors('ribId')}" th:errors="*{ribId}">
+                    rib Error
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="debitCredit">Debit / Credit</label>
+                <select class="form-select" th:field="*{debitCredit}" id="debitCredit" required >
+                    <option selected="selected" value="0">Select a movement</option>
+                    <option value="1">Add money on my PayMyBuddy account</option>
+                    <option value="2">Send money to my bank account</option>
+                </select>
+                <div style="color: red;" th:if="${#fields.hasErrors('debitCredit')}" th:errors="*{debitCredit}">
+                    Description Error
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="amount">Amount (positive number)</label>
+                <span class="input-symbol-euro">
+						<input type="number" th:field="*{amount}" step="0.01" value="0.00" min="0" id="amount">
+					  </span>
+                <div style="color: red;" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">
+                    Amount Error
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label for="button"> </label>
+                <button type="submit" class="btn btn-success btn-sm btn-block" id="button">Operate</button>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="container special">
+        <h3 class="col-md-12">My bank movements</h3>
+        <div class="col-md-12">
+            <div class="table-responsive border border-dark">
+                <table class="table table-striped table-sm">
+                    <thead class="text-white bg-success">
+                    <tr>
+                        <th>Account</th>
+                        <th>Operation</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(bankMovements)}">
+                        <td colspan="3">No bank movement registered</td>
+                    </tr>
+                    <tr th:each="bankMovement: ${bankMovements}">
+                        <td><span th:text="${bankMovement.rib.ribName}"> rib </span></td>
+                        <td><span th:text="${bankMovement.caption}"> Description </span></td>
+                        <td><span th:text="${bankMovement.amount}"> Amount </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

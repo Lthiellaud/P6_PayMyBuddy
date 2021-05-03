@@ -21,7 +21,6 @@ public class BankMovement implements Serializable {
     private Long movementId;
     private String caption;
     private Date movementDate;
-    private Boolean isCredit;
     private Double amount;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
