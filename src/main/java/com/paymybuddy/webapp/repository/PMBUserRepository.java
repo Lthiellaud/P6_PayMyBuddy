@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PMBUserRepository extends JpaRepository<PMBUser, Long> {
+
     PMBUser findUserByEmail(String email);
 }

@@ -27,6 +27,15 @@
 		.container {
 			max-width: 960px;
 		}
+		.navbar-nav {
+			float: right;
+			margin: 15px;
+		}
+		.navbar-nav>li {
+			float: left;
+			margin-right: 10px;
+			margin-left: 10px;
+		}
 		.input-symbol-euro {
 			position: relative;
 		}
@@ -40,20 +49,13 @@
 			content: "€";
 			right: 70px;
 		}
+		ul {list-style-type: none;}
 	</style>
 </head>
 <body>
-<!-- Include _navigation.html -->
+
 <th:block th:include="/_navigation"></th:block>
-<!--
-<nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand" href=".">Pay My Buddy</a>
-		</div>
-	</div>
-</nav>
--->
+
 
 <div class="container special">
 
@@ -62,6 +64,9 @@
 
 	<p></p>
 	<a class="btn btn-primary" href="/home/transfer" role="button">transfer money</a>
+
+	<p></p>
+	<a class="btn btn-primary" href="/home/account" role="button">manage your account</a>
 
 
 </div>

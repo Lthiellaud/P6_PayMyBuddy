@@ -32,7 +32,7 @@ public class PMBUser implements Serializable {
 
     private double balance;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pmbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Connexion> connexions;
 
     @OneToMany(mappedBy = "beneficiaryUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
