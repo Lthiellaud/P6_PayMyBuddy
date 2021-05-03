@@ -27,7 +27,30 @@
 		.container {
 			max-width: 960px;
 		}
-
+		.navbar-nav {
+			float: right;
+			margin: 15px;
+		}
+		.navbar-nav>li {
+			margin-right: 10px;
+			margin-left: 10px;
+		}
+		.input-symbol-euro {
+			position: relative;
+		}
+		.input-symbol-euro input {
+			text-align: center;
+			/*padding-left:100px*/
+		}
+		.input-symbol-euro:after {
+			position: absolute;
+			top: 0;
+			content: "€";
+			right: 70px;
+		}
+		ul {
+			list-style-type: none;
+		}
 	</style>
 </head>
 <body>
@@ -37,6 +60,9 @@
 
 	<div class="container special">
 		<h3 class="h3">New beneficiary ? Add a connexion</h3>
+		<p></p>
+		<h3 th:if="${message != null}" th:utext="${message}" style="color: red;"></h3>
+		<p></p>
 		<div>
 			<form method="post"
 			  	th:action="@{/home/connexion}" th:object="${connexionDTO}">
@@ -50,9 +76,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="mailInput">Email</label>
+					<label for="connexionMail">Email</label>
 					<input
-							type="text" th:field="*{connexionMail}" class="form-control" id="mailInput"
+							type="text" th:field="*{connexionMail}" class="form-control" id="connexionMail"
 							aria-describedby="mailHelp" placeholder="email"> <small
 						id="mailHelp" class="form-text text-muted">Enter the email of your new beneficiary.</small>
 					<div style="color: red;" th:if="${#fields.hasErrors('connexionMail')}" th:errors="*{connexionMail}">

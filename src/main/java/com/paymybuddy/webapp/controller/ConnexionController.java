@@ -2,10 +2,11 @@ package com.paymybuddy.webapp.controller;
 
 import com.paymybuddy.webapp.model.Connexion;
 import com.paymybuddy.webapp.model.DTO.ConnexionDTO;
-import com.paymybuddy.webapp.model.DTO.TransferDTO;
 import com.paymybuddy.webapp.model.constants.Response;
 import com.paymybuddy.webapp.service.ConnexionService;
 import com.paymybuddy.webapp.service.PMBSharedService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,8 @@ public class ConnexionController {
     @Autowired
     private PMBSharedService pmbSharedService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnexionController.class);
+
     @ModelAttribute("connexionDTO")
     public ConnexionDTO getConnexionDTOObject(){
         return new ConnexionDTO();
@@ -46,10 +49,21 @@ public class ConnexionController {
             return getConnexion(model);
         }
         Response response= connexionService.processConnexion(connexionDTO);
-        if (response == Response.OK) {
-            return "redirect:connexion";
+        switch (response) {
+            case OK:
+                model.addAttribute("connexionDTO", new ConnexionDTO());
+                model.addAttribute("message", response.getMessage());
+                break;
+            case EXISTING_CONNEXION_NAME:
+                bindingResult.rejectValue("connexionName", "error.connexionDTO", response.getMessage());
+                break;
+            case EXISTING_CONNEXION:
+            case MAIL_NOT_FOUND:
+                bindingResult.rejectValue("connexionMail", "error.connexionDTO", response.getMessage());
+                break;
+            default:
         }
-        return "connexionPage";
+        return getConnexion(model);
     }
     
 }

@@ -24,7 +24,7 @@ public class ConnexionServiceImpl implements ConnexionService {
 
     @Override
     public List<Connexion> getConnexionsByUser(PMBUser user) {
-        List<Connexion> connexions = connexionRepository.findAllByUser(user);
+        List<Connexion> connexions = connexionRepository.findAllByPmbUser(user);
         return connexions;
     }
 
@@ -42,7 +42,12 @@ public class ConnexionServiceImpl implements ConnexionService {
 
     @Override
     public Optional<Connexion> getByBeneficiaryAndUser(PMBUser beneficiary, PMBUser user) {
-        return connexionRepository.findByBeneficiaryUserAndUser(beneficiary, user);
+        return connexionRepository.findByBeneficiaryUserAndPmbUser(beneficiary, user);
+    }
+
+    @Override
+    public Optional<Connexion> getByConnexionNameAndUser(String connexionName, PMBUser user) {
+        return connexionRepository.findByConnexionNameAndPmbUser(connexionName, user);
     }
 
     @Override
@@ -55,13 +60,19 @@ public class ConnexionServiceImpl implements ConnexionService {
         if (getByBeneficiaryAndUser(beneficiary, currentUser).isPresent()) {
             return Response.EXISTING_CONNEXION;
         }
+        if (getByConnexionNameAndUser(connexionDTO.
+                getConnexionName(), currentUser).isPresent()) {
+            return Response.EXISTING_CONNEXION_NAME;
+        }
         Connexion newConnexion = new Connexion();
         newConnexion.setConnexionName(connexionDTO.getConnexionName());
-        newConnexion.setUser(currentUser);
+        newConnexion.setPmbUser(currentUser);
         newConnexion.setBeneficiaryUser(beneficiary);
         createConnexion(newConnexion);
 
         return Response.OK;
     }
+
+
 
 }

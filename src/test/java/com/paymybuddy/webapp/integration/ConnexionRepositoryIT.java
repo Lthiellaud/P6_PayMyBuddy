@@ -29,7 +29,7 @@ public class ConnexionRepositoryIT {
     public void findAllByUserTest() {
         Optional<PMBUser> user = userRepository.findById(1L);
         connexions = new ArrayList<>();
-        user.ifPresent(pmbUser -> connexions = connexionRepository.findAllByUser(pmbUser));
+        user.ifPresent(pmbUser -> connexions = connexionRepository.findAllByPmbUser(pmbUser));
         System.out.println("IT Test " + connexions.size());
         assertThat(connexions.size()).isEqualTo(2);
 
@@ -42,7 +42,7 @@ public class ConnexionRepositoryIT {
         Optional<Connexion> connexion = Optional.empty();
         if (user.isPresent() && beneficiaryUser.isPresent()) {
             connexion = connexionRepository
-                    .findByBeneficiaryUserAndUser(beneficiaryUser.get(), user.get());
+                    .findByBeneficiaryUserAndPmbUser(beneficiaryUser.get(), user.get());
         }
 
         assertThat(connexion.isPresent()).isTrue();

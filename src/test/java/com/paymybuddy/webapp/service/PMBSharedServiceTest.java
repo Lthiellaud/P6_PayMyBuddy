@@ -61,7 +61,7 @@ public class PMBSharedServiceTest {
         connexion = new Connexion();
         connexion.setConnexionId(1L);
         connexion.setBeneficiaryUser(beneficiary);
-        connexion.setUser(user);
+        connexion.setPmbUser(user);
         connexion.setConnexionName("The connexion");
 
         //ajouter la connexion à user

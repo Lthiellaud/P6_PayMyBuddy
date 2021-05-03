@@ -58,7 +58,7 @@ public class ConnexionServiceTest {
         connexion = new Connexion();
         connexion.setConnexionId(1L);
         connexion.setBeneficiaryUser(beneficiary);
-        connexion.setUser(currentUser);
+        connexion.setPmbUser(currentUser);
         connexion.setConnexionName("The connexion");
 
     }
@@ -66,7 +66,7 @@ public class ConnexionServiceTest {
     @Test
     public void addProcessConnexionTest() {
         when(pmbUserService.getByEmail("beneficiary@mail.com")).thenReturn(beneficiary);
-        when(connexionRepository.findByBeneficiaryUserAndUser(beneficiary, currentUser)).thenReturn(Optional.empty());
+        when(connexionRepository.findByBeneficiaryUserAndPmbUser(beneficiary, currentUser)).thenReturn(Optional.empty());
         when(connexionRepository.save(any(Connexion.class))).thenReturn(connexion);
 
         Response response = connexionService.processConnexion(connexionDTO);

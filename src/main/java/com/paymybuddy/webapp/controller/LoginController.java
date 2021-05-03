@@ -28,10 +28,8 @@ public class LoginController {
     public String getUser(Model model)
     {
         PMBUser user = pmbUserService.getCurrentUser();
-        String welcome = "Hello " + user.getFirstName() + " " + user.getLastName();
-        String balance ="You have " + user.getBalance() + " € on your account";
-        model.addAttribute("welcome", welcome);
-        model.addAttribute("balance", balance);
+        model.addAttribute("welcome", pmbUserService.getWelcomeMessage(user));
+        model.addAttribute("balance", pmbUserService.getBalanceMessage(user));
         //System.out.println(welcome);
         return "homePage";
     }

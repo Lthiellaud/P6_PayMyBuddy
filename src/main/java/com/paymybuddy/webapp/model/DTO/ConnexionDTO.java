@@ -1,10 +1,13 @@
 package com.paymybuddy.webapp.model.DTO;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ConnexionDTO {
 
     @NotBlank(message = "Please, enter a name for the connexion")

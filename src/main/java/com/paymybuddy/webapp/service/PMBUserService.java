@@ -6,6 +6,8 @@ public interface PMBUserService {
 
    PMBUser getByEmail(String email);
    PMBUser getCurrentUser();
-
-    PMBUser saveUser(PMBUser user);
+   String getWelcomeMessage(PMBUser user);
+   String getBalanceMessage(PMBUser user);
+   PMBUser saveUser(PMBUser user);
+   void updateUserBalance(PMBUser user, double amount);
 }

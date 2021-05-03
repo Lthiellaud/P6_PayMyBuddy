@@ -18,5 +18,7 @@ public interface ConnexionService {
 
     Optional<Connexion> getByBeneficiaryAndUser(PMBUser beneficiary, PMBUser user);
 
+    Optional<Connexion> getByConnexionNameAndUser(String connexionName, PMBUser user);
+
     Response processConnexion(ConnexionDTO connexionDTO);
 }

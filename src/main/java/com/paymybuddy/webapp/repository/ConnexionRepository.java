@@ -11,9 +11,11 @@ import java.util.Optional;
 @Repository
 public interface ConnexionRepository extends JpaRepository<Connexion, Long> {
 
-    List<Connexion> findAllByUser(PMBUser user);
+    List<Connexion> findAllByPmbUser(PMBUser user);
 
 
-    Optional<Connexion> findByBeneficiaryUserAndUser(PMBUser beneficiaryUser, PMBUser user);
+    Optional<Connexion> findByBeneficiaryUserAndPmbUser(PMBUser beneficiaryUser, PMBUser user);
+
+    Optional<Connexion> findByConnexionNameAndPmbUser(String connexionName, PMBUser user);
 
 }
