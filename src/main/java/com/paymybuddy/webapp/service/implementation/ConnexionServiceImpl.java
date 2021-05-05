@@ -1,5 +1,6 @@
 package com.paymybuddy.webapp.service.implementation;
 
+import com.paymybuddy.webapp.controller.ConnexionController;
 import com.paymybuddy.webapp.model.Connexion;
 import com.paymybuddy.webapp.model.DTO.ConnexionDTO;
 import com.paymybuddy.webapp.model.PMBUser;
@@ -7,6 +8,8 @@ import com.paymybuddy.webapp.model.constants.Response;
 import com.paymybuddy.webapp.repository.ConnexionRepository;
 import com.paymybuddy.webapp.service.ConnexionService;
 import com.paymybuddy.webapp.service.PMBUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +25,15 @@ public class ConnexionServiceImpl implements ConnexionService {
     @Autowired
     private PMBUserService pmbUserService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnexionController.class);
+
     @Override
     public List<Connexion> getConnexionsByUser(PMBUser user) {
-        List<Connexion> connexions = connexionRepository.findAllByPmbUser(user);
-        return connexions;
+        return connexionRepository.findAllByPmbUser(user);
     }
 
     @Override
     public Connexion createConnexion(Connexion connexion) throws Exception {
-
         return connexionRepository.save(connexion);
 
     }
@@ -52,16 +55,25 @@ public class ConnexionServiceImpl implements ConnexionService {
 
     @Override
     public Response processConnexion(ConnexionDTO connexionDTO) {
-        PMBUser beneficiary = pmbUserService.getByEmail(connexionDTO.getConnexionMail());
-        if (beneficiary == null) {
+        Optional<PMBUser> b = pmbUserService.getByEmail(connexionDTO.getConnexionMail());
+        PMBUser currentUser = pmbUserService.getCurrentUser();
+        if (!b.isPresent()) {
+            LOGGER.debug(Response.MAIL_NOT_FOUND + ": current user : " + currentUser.getEmail()
+                    + ", beneficiary mail to be found : " + connexionDTO.getConnexionMail());
             return Response.MAIL_NOT_FOUND;
         }
-        PMBUser currentUser = pmbUserService.getCurrentUser();
+        PMBUser beneficiary = b.get();
         if (getByBeneficiaryAndUser(beneficiary, currentUser).isPresent()) {
+            LOGGER.debug(Response.EXISTING_CONNEXION + ": current user : " + currentUser.getEmail()
+                    + ", beneficiary : " + beneficiary.getEmail()
+                    + ", connexionId : "
+                    + getByBeneficiaryAndUser(beneficiary, currentUser).get().getConnexionId());
             return Response.EXISTING_CONNEXION;
         }
         if (getByConnexionNameAndUser(connexionDTO.
                 getConnexionName(), currentUser).isPresent()) {
+            LOGGER.debug(Response.EXISTING_CONNEXION_NAME + ": current user : " + currentUser.getEmail()
+                    + ", connexion mail to be added : " + connexionDTO.getConnexionName());
             return Response.EXISTING_CONNEXION_NAME;
         }
         Connexion newConnexion = new Connexion();

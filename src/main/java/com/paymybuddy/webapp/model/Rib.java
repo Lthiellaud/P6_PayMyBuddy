@@ -1,6 +1,6 @@
 package com.paymybuddy.webapp.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +10,10 @@ import java.util.Set;
  * Rib class defines the RIBs available for a user.
  */
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Rib")
 public class Rib implements Serializable {
     @Id

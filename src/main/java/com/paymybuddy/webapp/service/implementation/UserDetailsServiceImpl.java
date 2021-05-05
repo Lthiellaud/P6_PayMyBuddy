@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -25,12 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) {
-        PMBUser pmbUser = pmbUserService.getByEmail(email);
-        if (pmbUser == null) {
+        Optional<PMBUser> user = pmbUserService.getByEmail(email);
+        if (!user.isPresent()) {
             System.out.println("User not found! " + email);
             throw new UsernameNotFoundException("User with email " + email + " not found in the database");
         }
-
+        PMBUser pmbUser = user.get();
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
         return buildUserForAuthentication(pmbUser, grantedAuthorities);

@@ -56,4 +56,15 @@ public class ConnexionRepositoryIT {
 
     }
 
+    @Test
+    public void findByConnexionNameAndPmbUserTest() {
+        Optional<PMBUser> user = userRepository.findById(1L);
+        Optional<Connexion> connexion = Optional.empty();
+        if (user.isPresent()) {
+            connexion = connexionRepository.findByConnexionNameAndPmbUser("My connexion to Tom", user.get());
+        }
+        assertThat(connexion.isPresent()).isTrue();
+        assertThat(connexion.get().getConnexionId()).isEqualTo(1L);
+    }
+
 }

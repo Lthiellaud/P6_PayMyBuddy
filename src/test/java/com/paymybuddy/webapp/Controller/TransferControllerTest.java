@@ -51,6 +51,18 @@ public class TransferControllerTest {
 
     @WithMockUser
     @Test
+    public void getTransferPageTest() throws Exception {
+        List<Connexion> connexionList = new ArrayList<>();
+        mockMvc.perform(get("/home/transfer"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("transferPage"))
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attribute("connexions", connexionList));
+
+    }
+
+    @WithMockUser
+    @Test
     public void transferMoneyWithoutChosenConnexionTest() throws Exception {
        mockMvc.perform(post("/home/transfer")
                     .param("connexionId", "0")

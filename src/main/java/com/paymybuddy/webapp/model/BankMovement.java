@@ -1,6 +1,6 @@
 package com.paymybuddy.webapp.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +12,10 @@ import java.util.Date;
  * It is false if money is retrieved from the PayMyBuddy account.
  */
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Bank_movements")
 public class BankMovement implements Serializable {
 

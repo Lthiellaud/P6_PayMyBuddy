@@ -1,9 +1,6 @@
 package com.paymybuddy.webapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,8 +11,8 @@ import java.util.Set;
  *  UserId, email (unique), firstname, lastname and balance (available amount)
  */
 @Entity
-@Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="Users")

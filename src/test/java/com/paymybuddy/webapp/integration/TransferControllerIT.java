@@ -1,6 +1,5 @@
 package com.paymybuddy.webapp.integration;
 
-import com.paymybuddy.webapp.model.Connexion;
 import com.paymybuddy.webapp.model.constants.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -28,18 +23,6 @@ public class TransferControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
-
-    @WithMockUser
-    @Test
-    public void getTransferPageTest() throws Exception {
-        List<Connexion> connexionList = new ArrayList<>();
-        mockMvc.perform(get("/home/transfer"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("transferPage"))
-                .andExpect(model().hasNoErrors())
-                .andExpect(model().attribute("connexions", connexionList));
-
-    }
 
     @WithMockUser
     @Test

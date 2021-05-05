@@ -2,9 +2,11 @@ package com.paymybuddy.webapp.service;
 
 import com.paymybuddy.webapp.model.PMBUser;
 
+import java.util.Optional;
+
 public interface PMBUserService {
 
-   PMBUser getByEmail(String email);
+   Optional<PMBUser> getByEmail(String email);
    PMBUser getCurrentUser();
    String getWelcomeMessage(PMBUser user);
    String getBalanceMessage(PMBUser user);

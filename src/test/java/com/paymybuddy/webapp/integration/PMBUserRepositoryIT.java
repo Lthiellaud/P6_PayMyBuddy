@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -19,12 +21,13 @@ public class PMBUserRepositoryIT {
     @Autowired
     private PMBUserRepository pmbUserRepository;
 
-    private static PMBUser pmbUser;
+    private static Optional<PMBUser> pmbUser;
 
     @Test
     public void findUserByEmailTest() {
         pmbUser = pmbUserRepository.findUserByEmail("lol.buddy@mail.com");
 
-        assertThat(pmbUser.getEmail()).isEqualTo("lol.buddy@mail.com");
+        assertThat(pmbUser.isPresent()).isTrue();
+        assertThat(pmbUser.get().getEmail()).isEqualTo("lol.buddy@mail.com");
     }
 }

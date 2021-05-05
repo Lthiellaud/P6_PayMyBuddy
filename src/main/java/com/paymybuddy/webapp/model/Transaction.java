@@ -1,6 +1,6 @@
 package com.paymybuddy.webapp.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +12,10 @@ import java.util.Date;
  * monetizationPC is the percentage of the commission taken on each transaction
  */
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Transactions")
 public class Transaction implements Serializable {
     @Id

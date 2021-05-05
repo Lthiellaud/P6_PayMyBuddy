@@ -1,6 +1,6 @@
 package com.paymybuddy.webapp.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +10,10 @@ import java.util.Set;
  * Connexion contains the "friend" list for each account.
  */
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Connexions", indexes = {
         @Index(name = "uk_Connection_User_Beneficiary",
                 columnList = "user_user_id, beneficiary_user_id",

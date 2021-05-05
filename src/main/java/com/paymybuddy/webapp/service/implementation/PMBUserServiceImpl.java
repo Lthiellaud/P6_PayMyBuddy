@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PMBUserServiceImpl implements PMBUserService {
 
@@ -20,7 +22,7 @@ public class PMBUserServiceImpl implements PMBUserService {
     private PMBUserRepository pmbUserRepository;
 
     @Override
-    public PMBUser getByEmail(String email) {
+    public Optional<PMBUser> getByEmail(String email) {
         return pmbUserRepository.findUserByEmail(email);
     }
 
@@ -28,12 +30,15 @@ public class PMBUserServiceImpl implements PMBUserService {
     public PMBUser getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (principal instanceof UserDetails) {
-            String username = ((UserDetails)principal).getUsername();
-            return getByEmail(username);
-        } else {
+        if (!(principal instanceof UserDetails)) {
             return null;
         }
+        String username = ((UserDetails)principal).getUsername();
+        Optional<PMBUser> pmbUser = getByEmail(username);
+        if (pmbUser.isPresent()) {
+            return pmbUser.get();
+        }
+        return null;
     }
 
     @Override
