@@ -54,11 +54,12 @@ public class PMBUserServiceImpl implements PMBUserService {
     }
 
     @Override
-    public void updateUserBalance(PMBUser user, double amount) {
+    public PMBUser updateUserBalance(PMBUser user, double amount) {
         user.setBalance(user.getBalance() + amount);
         LOGGER.debug("updateUserBalance for userID " + user.getUserId()
                 + " - new balance = " + user.getBalance());
-        saveUser(user);
+
+        return saveUser(user);
 
     }
 

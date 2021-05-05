@@ -24,7 +24,17 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public List<Transaction> getAllTransactions() {
+        return transactionRepository.findAll();
+    }
+
+    @Override
     public Transaction createTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
+    }
+
+    @Override
+    public void deleteAllTransaction() {
+        transactionRepository.deleteAll();
     }
 }

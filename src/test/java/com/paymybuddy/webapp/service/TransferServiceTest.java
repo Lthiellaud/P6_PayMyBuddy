@@ -5,21 +5,18 @@ import com.paymybuddy.webapp.model.DTO.TransferDTO;
 import com.paymybuddy.webapp.model.PMBUser;
 import com.paymybuddy.webapp.model.Transaction;
 import com.paymybuddy.webapp.model.constants.Response;
-import com.paymybuddy.webapp.repository.PMBUserRepository;
 import com.paymybuddy.webapp.service.implementation.TransferServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class TransferServiceTest {
@@ -72,47 +69,78 @@ public class TransferServiceTest {
 }
 
     @Test
-    public void processTransferTest() {
+    public void processTransferTest() throws Exception {
 
         Optional<Connexion> c = Optional.of(connexion);
-
         when(connexionService.getById(1L)).thenReturn(c);
-        //Response TransferDTO transferDTO
-
-    }
-    @Test
-    public void registerTransferTest() throws Exception {
-        //Response TransferDTO transferDTO, Connexion connexion
         when(transactionService.createTransaction(any(Transaction.class))).thenReturn(new Transaction());
-        when(pmbUserService.saveUser(user)).thenReturn(user);
-        when(pmbUserService.saveUser(beneficiary)).thenReturn(beneficiary);
+        when(pmbUserService.updateUserBalance(user, -10.0)).thenReturn(user);
+        when(pmbUserService.updateUserBalance(beneficiary, 10.0)).thenReturn(beneficiary);
 
-        Response response = transferService.registerTransfer(transferDTO, connexion);
+        Response response = transferService.processTransfer(transferDTO);
 
-        assertThat(user.getBalance()).isEqualTo(30.0);
-        assertThat(beneficiary.getBalance()).isEqualTo(50.0);
+        verify(connexionService, times(1)).getById(1L);
+        verify(transactionService, times(1)).createTransaction(any(Transaction.class));
+        verify(pmbUserService, times(1)).updateUserBalance(user, -10.0);
+        verify(pmbUserService, times(1)).updateUserBalance(beneficiary, 10.0);
         assertThat(response).isEqualTo(Response.OK);
 
     }
 
     @Test
-    public void registerTransferThrowExceptionOnTransferCreateTest() throws Exception {
-        //Response TransferDTO transferDTO, Connexion connexion
-        when(transactionService.createTransaction(any(Transaction.class))).thenThrow(RuntimeException.class);
-        Response response = transferService.registerTransfer(transferDTO, connexion);
+    public void processTransferSAVE_KOTest() throws Exception {
+
+        Optional<Connexion> c = Optional.of(connexion);
+        when(connexionService.getById(1L)).thenReturn(c);
+        when(transactionService.createTransaction(any(Transaction.class))).thenReturn(new Transaction());
+        when(pmbUserService.updateUserBalance(user, -10.0)).thenReturn(user);
+        when(pmbUserService.updateUserBalance(beneficiary, 10.0)).thenThrow(RuntimeException.class);
+
+        Response response = transferService.processTransfer(transferDTO);
+
+        verify(connexionService, times(1)).getById(1L);
+        verify(transactionService, times(1)).createTransaction(any(Transaction.class));
+        verify(pmbUserService, times(1)).updateUserBalance(user, -10.0);
+        verify(pmbUserService, times(1)).updateUserBalance(beneficiary, 10.0);
         assertThat(response).isEqualTo(Response.SAVE_KO);
 
     }
+
     @Test
-    public void registerTransferThrowExceptionOnUserSaveTest() throws Exception {
+    public void processTransferWhenConnexionIsNotFoundShouldReturnDATA_ISSUE() throws Exception {
+        //Response TransferDTO transferDTO, Connexion connexion
+        when(connexionService.getById(1L)).thenReturn(Optional.empty());
+        Response response = transferService.processTransfer(transferDTO);
+        assertThat(response).isEqualTo(Response.DATA_ISSUE);
+
+    }
+    @Test
+    public void processTransferWithAmount50ShouldReturnNOT_ENOUGH_MONEY() throws Exception {
+        transferDTO.setAmount(50.0);
+        Optional<Connexion> c = Optional.of(connexion);
+        when(connexionService.getById(1L)).thenReturn(c);
+
+        Response response = transferService.processTransfer(transferDTO);
+
+        assertThat(response).isEqualTo(Response.NOT_ENOUGH_MONEY);
+
+    }
+
+    @Test
+    public void registerTransferTest() throws Exception {
         //Response TransferDTO transferDTO, Connexion connexion
         when(transactionService.createTransaction(any(Transaction.class))).thenReturn(new Transaction());
-        when(pmbUserService.saveUser(user)).thenReturn(user);
-        when(pmbUserService.saveUser(beneficiary)).thenThrow(RuntimeException.class);
+        when(pmbUserService.updateUserBalance(user, -10.0)).thenReturn(user);
+        when(pmbUserService.updateUserBalance(beneficiary, 10.0)).thenReturn(beneficiary);
 
         Response response = transferService.registerTransfer(transferDTO, connexion);
 
-        assertThat(response).isEqualTo(Response.SAVE_KO);
+        verify(transactionService, times(1)).createTransaction(any(Transaction.class));
+        verify(pmbUserService, times(1)).updateUserBalance(user, -10.0);
+        verify(pmbUserService, times(1)).updateUserBalance(beneficiary, 10.0);
+        assertThat(user.getBalance()).isEqualTo(40.0);
+        assertThat(beneficiary.getBalance()).isEqualTo(40.0);
+        assertThat(response).isEqualTo(Response.OK);
 
     }
 

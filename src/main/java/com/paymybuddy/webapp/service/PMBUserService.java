@@ -9,5 +9,5 @@ public interface PMBUserService {
    String getWelcomeMessage(PMBUser user);
    String getBalanceMessage(PMBUser user);
    PMBUser saveUser(PMBUser user);
-   void updateUserBalance(PMBUser user, double amount);
+   PMBUser updateUserBalance(PMBUser user, double amount);
 }

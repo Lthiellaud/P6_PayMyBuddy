@@ -36,7 +36,7 @@ public class ConnexionController {
     }
 
     @GetMapping("/home/connexion")
-    public String getConnexion (Model model) {
+    public String getConnexionPage(Model model) {
         List<Connexion> connexions = pmbSharedService.getUserConnexion();
         model.addAttribute("connexions", connexions);
         return "connexionPage";
@@ -46,7 +46,7 @@ public class ConnexionController {
     public String addConnexion(@ModelAttribute ("connexionDTO") @Valid ConnexionDTO connexionDTO,
                                final BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return getConnexion(model);
+            return getConnexionPage(model);
         }
         Response response= connexionService.processConnexion(connexionDTO);
         switch (response) {
@@ -61,9 +61,12 @@ public class ConnexionController {
             case MAIL_NOT_FOUND:
                 bindingResult.rejectValue("connexionMail", "error.connexionDTO", response.getMessage());
                 break;
+            case SAVE_KO:
+                model.addAttribute("message", response.getMessage());
+                break;
             default:
         }
-        return getConnexion(model);
+        return getConnexionPage(model);
     }
     
 }

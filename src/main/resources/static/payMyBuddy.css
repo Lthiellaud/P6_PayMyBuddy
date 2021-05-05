@@ -1,0 +1,35 @@
+@charset "UTF-8";
+body {
+    padding-top: 50px;
+}
+.special {
+    padding-top:50px;
+}
+.container {
+    max-width: 960px;
+}
+.navbar-nav {
+    float: right;
+    margin: 15px;
+}
+.navbar-nav>li {
+    float: left;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.input-symbol-euro {
+    position: relative;
+}
+.input-symbol-euro input {
+    text-align: center;
+    /*padding-left:100px*/
+}
+.input-symbol-euro:after {
+    position: absolute;
+    top: 0;
+    content: "€";
+    right: 70px;
+}
+ul {
+    list-style-type: none;
+}

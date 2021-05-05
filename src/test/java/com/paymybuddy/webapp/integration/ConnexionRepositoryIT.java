@@ -7,6 +7,8 @@ import com.paymybuddy.webapp.repository.PMBUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@Sql("/sql/schema.sql")
+@Sql("/sql/data.sql")
 public class ConnexionRepositoryIT {
 
     @Autowired
@@ -32,6 +37,7 @@ public class ConnexionRepositoryIT {
         user.ifPresent(pmbUser -> connexions = connexionRepository.findAllByPmbUser(pmbUser));
         System.out.println("IT Test " + connexions.size());
         assertThat(connexions.size()).isEqualTo(2);
+        assertThat(connexions.get(0).getBeneficiaryUser().getUserId()).isIn(2L, 3L);
 
     }
 

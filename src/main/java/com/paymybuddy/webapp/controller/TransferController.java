@@ -1,16 +1,20 @@
 package com.paymybuddy.webapp.controller;
 
 import com.paymybuddy.webapp.model.Connexion;
+import com.paymybuddy.webapp.model.DTO.ConnexionDTO;
 import com.paymybuddy.webapp.model.DTO.TransferDTO;
 import com.paymybuddy.webapp.model.Transaction;
 import com.paymybuddy.webapp.model.constants.Response;
 import com.paymybuddy.webapp.service.PMBSharedService;
 import com.paymybuddy.webapp.service.TransactionService;
 import com.paymybuddy.webapp.service.implementation.TransferServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +35,8 @@ public class TransferController {
     @Autowired
     private PMBSharedService pmbSharedService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransferController.class);
+
     @ModelAttribute("transfer")
     public TransferDTO getTransferDTOObject(){
         return new TransferDTO();
@@ -44,7 +50,7 @@ public class TransferController {
         System.out.println(transactions.size());
         model.addAttribute("connexions", connexions);
         model.addAttribute("transactions", transactions);
-        return "transfer";
+        return "transferPage";
     }
 
     @PostMapping("/home/transfer")
@@ -57,7 +63,22 @@ public class TransferController {
         }
         Response response= transferService.processTransfer(transfer);
         System.out.println(response);
-        return "redirect:transfer";
+        switch (response) {
+            case OK:
+                model.addAttribute("transfer", new TransferDTO());
+                model.addAttribute("message", response.getMessage());
+                break;
+            case NOT_ENOUGH_MONEY:
+                bindingResult.rejectValue("amount", "error.transfer", response.getMessage());
+                break;
+            case DATA_ISSUE:
+            case SAVE_KO:
+                model.addAttribute("message", response.getMessage());
+                break;
+            default:
+        }
+        System.out.println("bindingResult : " + bindingResult.hasErrors());
+        return getTransferPage(model);
     }
 
 }

@@ -29,7 +29,7 @@ public class ConnexionServiceImpl implements ConnexionService {
     }
 
     @Override
-    public Connexion createConnexion(Connexion connexion) {
+    public Connexion createConnexion(Connexion connexion) throws Exception {
 
         return connexionRepository.save(connexion);
 
@@ -68,7 +68,12 @@ public class ConnexionServiceImpl implements ConnexionService {
         newConnexion.setConnexionName(connexionDTO.getConnexionName());
         newConnexion.setPmbUser(currentUser);
         newConnexion.setBeneficiaryUser(beneficiary);
-        createConnexion(newConnexion);
+        try {
+            createConnexion(newConnexion) ;
+        }
+        catch (Exception e) {
+            return Response.SAVE_KO;
+        }
 
         return Response.OK;
     }

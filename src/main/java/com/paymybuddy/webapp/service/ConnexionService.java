@@ -12,7 +12,7 @@ public interface ConnexionService {
 
     List<Connexion> getConnexionsByUser(PMBUser user);
 
-    Connexion createConnexion(Connexion connexion);
+    Connexion createConnexion(Connexion connexion) throws Exception;
 
     Optional<Connexion> getById(Long connexionId);
 

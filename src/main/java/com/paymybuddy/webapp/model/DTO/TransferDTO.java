@@ -1,11 +1,14 @@
 package com.paymybuddy.webapp.model.DTO;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class TransferDTO {
 
     @Positive(message = "Please, select a connexion")

@@ -9,6 +9,5 @@ public interface TransferService {
 
     Response processTransfer(TransferDTO transferDTO);
 
-    @Transactional
-    Response registerTransfer(TransferDTO transferDTO, Connexion connexion);
+    Response registerTransfer(TransferDTO transferDTO, Connexion connexion) throws Exception;
 }

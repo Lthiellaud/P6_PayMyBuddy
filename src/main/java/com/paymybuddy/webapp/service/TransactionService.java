@@ -9,5 +9,9 @@ public interface TransactionService {
 
     List<Transaction> getTransactions(List<Connexion> connexions);
 
+    List<Transaction> getAllTransactions();
+
     Transaction createTransaction(Transaction transaction) throws Exception;
+
+    void deleteAllTransaction();
 }
