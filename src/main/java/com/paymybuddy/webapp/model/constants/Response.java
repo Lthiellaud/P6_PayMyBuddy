@@ -7,7 +7,8 @@ public enum Response {
     MAIL_NOT_FOUND("This email is unknown in Pay my Buddy "),
     EXISTING_CONNEXION("This email is already used for a connexion"),
     EXISTING_CONNEXION_NAME("This connexion name already exists"),
-    DATA_ISSUE("A problem occurs, please try again later");
+    DATA_ISSUE("A problem occurs, please try again later"),
+    BANK_EXCHANGE_ISSUE("A problem occurred during the exchange with your bank, please try again later");
 
     private String message;
 

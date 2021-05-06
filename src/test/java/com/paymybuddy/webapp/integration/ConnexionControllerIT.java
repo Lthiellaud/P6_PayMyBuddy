@@ -2,7 +2,6 @@ package com.paymybuddy.webapp.integration;
 
 import com.paymybuddy.webapp.model.Connexion;
 import com.paymybuddy.webapp.model.constants.Response;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

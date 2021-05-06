@@ -54,25 +54,28 @@ public class AccountController {
         model.addAttribute("balance", pmbUserService.getBalanceMessage(user));
 
         List<Rib> ribs = pmbSharedService.getUserRib();
-        System.out.println(ribs.size());
+        LOGGER.debug("get /home/account - Number of RIBs : " + ribs.size());
         model.addAttribute("ribs", ribs);
 
         List<BankMovement> bankMovements = bankMovementService.getMovements(ribs);
-        System.out.println(bankMovements.size());
+        LOGGER.debug("get /home/account - Number of operations : " + bankMovements.size());
+
         model.addAttribute("bankMovements", bankMovements);
         return "accountPage";
     }
 
     @PostMapping("/home/account")
-    public String transferMoney(@ModelAttribute("operationDTO") @Valid OperationDTO operationDTO,
+    public String manageAccount(@ModelAttribute("operationDTO") @Valid OperationDTO operationDTO,
                                       final BindingResult bindingResult, Model model) {
-        System.out.println(operationDTO.getRibId() + " " + operationDTO.getDebitCredit()
-                + " " + operationDTO.getAmount());
+        LOGGER.debug("post /home/account - Selected Rib : " + operationDTO.getRibId()
+                + ", selected operation : " + operationDTO.getDebitCredit()
+                + ", amount : " + operationDTO.getAmount());
         if (bindingResult.hasErrors()) {
+            LOGGER.debug("post /home/account - entry errors detected");
             return getAccountPage(model);
         }
         Response response = accountService.operateMovement(operationDTO);
-        System.out.println(response);
+        LOGGER.debug("post /home/account - operation result : " + response);
         switch (response) {
             case OK:
                 model.addAttribute("operationDTO", new OperationDTO());
@@ -87,7 +90,7 @@ public class AccountController {
                 break;
             default:
         }
-        System.out.println("bindingResult : " + bindingResult.hasErrors());
+        LOGGER.debug("post /home/account - bindingResult : " + bindingResult.hasErrors());
         return getAccountPage(model);
     }
 

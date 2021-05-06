@@ -4,15 +4,12 @@ import com.paymybuddy.webapp.controller.TransferController;
 import com.paymybuddy.webapp.model.Connexion;
 import com.paymybuddy.webapp.service.PMBSharedService;
 import com.paymybuddy.webapp.service.TransactionService;
-import com.paymybuddy.webapp.service.implementation.TransferServiceImpl;
+import com.paymybuddy.webapp.service.TransferService;
 import com.paymybuddy.webapp.service.implementation.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,7 +27,7 @@ public class TransferControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private TransferServiceImpl transferService;
+    private TransferService transferService;
 
     @MockBean
     private TransactionService transactionService;

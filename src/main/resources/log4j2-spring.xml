@@ -21,7 +21,7 @@
         <Root level="error">
             <AppenderRef ref="Console"/>
         </Root>
-        <Logger name="com.paymybuddy.webapp" level="debug">
+        <Logger name="com.paymybuddy.webapp" level="info">
             <AppenderRef ref="appLog" />
         </Logger>
         <Logger name="org.springframework.boot.web.embedded.tomcat" level="info">

@@ -1,7 +1,7 @@
 package com.paymybuddy.webapp.service.implementation;
 
 import com.paymybuddy.webapp.model.BankMovement;
-import com.paymybuddy.webapp.model.DTO.BankMovementDTO;
+import com.paymybuddy.webapp.model.DTO.BankExchangeDTO;
 import com.paymybuddy.webapp.model.DTO.OperationDTO;
 import com.paymybuddy.webapp.model.Rib;
 import com.paymybuddy.webapp.model.constants.Response;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -35,11 +36,8 @@ public class AccountServiceImpl implements AccountService {
             return Response.DATA_ISSUE;
         }
         Rib rib = r.get();
-        int sign = operationDTO.getDebitCredit() == 2 ? (-1) : 1;
-        System.out.println("signe" + sign);
-        operationDTO.setAmount(operationDTO.getAmount() * sign);
-        System.out.println("Montant signé : " + operationDTO.getAmount());
-        if (operationDTO.getAmount() + rib.getUser().getBalance() < 0) {
+
+        if (operationDTO.getAmount()  * operationDTO.getDebitCredit() + rib.getUser().getBalance() < 0) {
             return Response.NOT_ENOUGH_MONEY;
         }
         Response response = Response.SAVE_KO;
@@ -56,22 +54,24 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public Response registerMovement(OperationDTO operationDTO, Rib rib) {
         //Set the new bank movement
+        SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy");
         BankMovement bankMovement = new BankMovement();
-        bankMovement.setAmount(operationDTO.getAmount());
-        bankMovement.setCaption(operationDTO.getDebitCredit() == 2?"Get my money" : "Fund my account");
+        bankMovement.setAmount(operationDTO.getAmount() * operationDTO.getDebitCredit());
         bankMovement.setMovementDate(new Date());
+        bankMovement.setCaption(dFormat.format(bankMovement.getMovementDate()) + " - "
+                + (operationDTO.getDebitCredit() == -1 ? "Get my money" : "Fund my account"));
         bankMovement.setRib(rib);
         bankMovementService.createMovement(bankMovement);
 
         //send the movement to the bank and get a response
-        //Non traité dans la maquette
-        BankMovementDTO bankMovementDTO = new BankMovementDTO();
-        if (callBankService.sendBankMovement(bankMovementDTO) != Response.OK) {
-            throw new RuntimeException();
+        //untreated for the prototype of the application
+        BankExchangeDTO bankExchangeDTO = new BankExchangeDTO();
+        if (callBankService.sendBankMovement(bankExchangeDTO) != Response.OK) {
+            throw new RuntimeException("A problem occurred during the exchange with your bank");
         }
 
         //update the user
-        pmbUserService.updateUserBalance(rib.getUser(), operationDTO.getAmount());
+        pmbUserService.updateUserBalance(rib.getUser(), bankMovement.getAmount());
 
         return Response.OK;
     }

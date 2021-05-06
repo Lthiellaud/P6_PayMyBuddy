@@ -126,23 +126,5 @@ public class TransferServiceTest {
 
     }
 
-    @Test
-    public void registerTransferTest() throws Exception {
-        //Response TransferDTO transferDTO, Connexion connexion
-        when(transactionService.createTransaction(any(Transaction.class))).thenReturn(new Transaction());
-        when(pmbUserService.updateUserBalance(user, -10.0)).thenReturn(user);
-        when(pmbUserService.updateUserBalance(beneficiary, 10.0)).thenReturn(beneficiary);
-
-        Response response = transferService.registerTransfer(transferDTO, connexion);
-
-        verify(transactionService, times(1)).createTransaction(any(Transaction.class));
-        verify(pmbUserService, times(1)).updateUserBalance(user, -10.0);
-        verify(pmbUserService, times(1)).updateUserBalance(beneficiary, 10.0);
-        assertThat(user.getBalance()).isEqualTo(40.0);
-        assertThat(beneficiary.getBalance()).isEqualTo(40.0);
-        assertThat(response).isEqualTo(Response.OK);
-
-    }
-
 
 }
