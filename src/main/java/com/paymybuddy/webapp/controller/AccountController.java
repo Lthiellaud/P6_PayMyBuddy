@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -59,6 +60,10 @@ public class AccountController {
 
         List<BankMovement> bankMovements = bankMovementService.getMovements(ribs);
         LOGGER.debug("get /home/account - Number of operations : " + bankMovements.size());
+        SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy");
+        bankMovements.forEach(movement ->
+                movement.setCaption(dFormat.format(movement.getMovementDate()) + " | "
+                    + movement.getCaption()));
 
         model.addAttribute("bankMovements", bankMovements);
         return "accountPage";

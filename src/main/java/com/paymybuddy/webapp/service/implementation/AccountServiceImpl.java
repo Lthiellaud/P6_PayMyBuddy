@@ -54,12 +54,10 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public Response registerMovement(OperationDTO operationDTO, Rib rib) {
         //Set the new bank movement
-        SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy");
         BankMovement bankMovement = new BankMovement();
         bankMovement.setAmount(operationDTO.getAmount() * operationDTO.getDebitCredit());
         bankMovement.setMovementDate(new Date());
-        bankMovement.setCaption(dFormat.format(bankMovement.getMovementDate()) + " - "
-                + (operationDTO.getDebitCredit() == -1 ? "Get my money" : "Fund my account"));
+        bankMovement.setCaption((operationDTO.getDebitCredit() == -1 ? "Get my money" : "Fund my account"));
         bankMovement.setRib(rib);
         bankMovementService.createMovement(bankMovement);
 

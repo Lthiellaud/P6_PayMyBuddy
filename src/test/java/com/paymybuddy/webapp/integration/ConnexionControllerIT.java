@@ -1,6 +1,5 @@
 package com.paymybuddy.webapp.integration;
 
-import com.paymybuddy.webapp.model.Connexion;
 import com.paymybuddy.webapp.model.constants.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,26 +24,6 @@ public class ConnexionControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
-
-    @Test
-    public void getConnexionPageWithoutAuthenticationTest() throws Exception {
-        mockMvc.perform(get("/home/connexion"))
-                .andExpect(status().is(302))
-                .andExpect(redirectedUrl("http://localhost/login"));
-
-    }
-
-    @WithMockUser
-    @Test
-    public void getConnexionPageTest() throws Exception {
-        List<Connexion> connexionList = new ArrayList<>();
-        mockMvc.perform(get("/home/connexion"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("connexionPage"))
-                .andExpect(model().hasNoErrors())
-                .andExpect(model().attribute("connexions", connexionList));
-
-    }
 
     @WithUserDetails("tom.buddy@mail.com")
     @Test

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -43,24 +44,31 @@ public class TransferController {
     @GetMapping("/home/transfer")
     public String getTransferPage(Model model) {
         List<Connexion> connexions = pmbSharedService.getUserConnexion();
-        System.out.println(connexions.size());
-        List<Transaction> transactions = transactionService.getTransactions(connexions);
-        System.out.println(transactions.size());
+        LOGGER.debug("get /home/transfer - Number of connexions: " + connexions.size());
         model.addAttribute("connexions", connexions);
+
+        List<Transaction> transactions = transactionService.getTransactions(connexions);
+        LOGGER.debug("get /home/transfer - Number of transactions: " + transactions.size());
+        SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy");
+        transactions.forEach(transaction ->
+                transaction.setDescription(dFormat.format(transaction.getTransactionDate())
+                    + " | " + transaction.getDescription()));
         model.addAttribute("transactions", transactions);
+
         return "transferPage";
     }
 
     @PostMapping("/home/transfer")
     public String transferMoney(@ModelAttribute("transfer") @Valid TransferDTO transfer,
                                       final BindingResult bindingResult, Model model) {
-        System.out.println(transfer.getConnexionId() + " " + transfer.getDescription()
-                + " " + transfer.getAmount());
+        LOGGER.debug("post /home/transfer for connexion: " + transfer.getConnexionId()
+                + ", description: " + transfer.getDescription()
+                + ", amount " + transfer.getAmount());
         if (bindingResult.hasErrors()) {
             return getTransferPage(model);
         }
         Response response= transferService.processTransfer(transfer);
-        System.out.println(response);
+        LOGGER.debug("post /home/transfer - result: " + response);
         switch (response) {
             case OK:
                 model.addAttribute("transfer", new TransferDTO());
@@ -75,7 +83,7 @@ public class TransferController {
                 break;
             default:
         }
-        System.out.println("bindingResult : " + bindingResult.hasErrors());
+        LOGGER.debug("bindingResult : " + bindingResult.hasErrors());
         return getTransferPage(model);
     }
 

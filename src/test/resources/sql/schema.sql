@@ -36,7 +36,7 @@ CREATE TABLE `rib` (
   `user_id` bigint NOT NULL,
   `rib_name` varchar(30) DEFAULT NULL,
   `account_owner` varchar(30) DEFAULT NULL,
-  `bic` varchar(8) DEFAULT NULL,
+  `bic` varchar(11) DEFAULT NULL,
   `iban` varchar(34) DEFAULT NULL,
   PRIMARY KEY (`rib_id`),
   CONSTRAINT `FK_rib_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)

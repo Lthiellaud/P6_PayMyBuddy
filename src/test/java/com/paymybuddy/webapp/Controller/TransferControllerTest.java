@@ -85,7 +85,6 @@ public class TransferControllerTest {
                 .andExpect(model().hasErrors())
                 .andExpect(model().attributeHasFieldErrorCode("transfer", "description", "NotBlank"));
 
-
     }
 
     @WithMockUser

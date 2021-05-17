@@ -35,8 +35,6 @@ public class TransferControllerIT {
                 .andExpect(view().name("transferPage"))
                 .andExpect(model().hasNoErrors())
                .andExpect(model().attribute("message", Response.OK.getMessage()));
-
-
     }
 
     @WithMockUser
