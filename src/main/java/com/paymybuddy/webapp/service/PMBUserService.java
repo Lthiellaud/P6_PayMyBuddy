@@ -10,6 +10,8 @@ public interface PMBUserService {
    PMBUser getCurrentUser();
    String getWelcomeMessage(PMBUser user);
    String getBalanceMessage(PMBUser user);
+
    PMBUser saveUser(PMBUser user);
    PMBUser updateUserBalance(PMBUser user, double amount);
+
 }

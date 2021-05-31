@@ -9,6 +9,9 @@ public enum Response {
     EXISTING_CONNEXION_NAME("This connexion name already exists"),
     EXISTING_IBAN("This IBAN / BIC is already registered"),
     EXISTING_RIB_NAME("This rib name already exists"),
+    EXISTING_USER("This user mail already exists, please sign in to access Pay My Buddy"),
+    REGISTERED("Thank you for registering, you can now log in"),
+    MISMATCH_PASSWORD("Error in repeating password, please retry"),
     IBAN_BIC_KO("IBAN / BIC is not correct"),
     DATA_ISSUE("A problem occurs, please try again later"),
     BANK_EXCHANGE_ISSUE("A problem occurred during the exchange with your bank, please try again later");

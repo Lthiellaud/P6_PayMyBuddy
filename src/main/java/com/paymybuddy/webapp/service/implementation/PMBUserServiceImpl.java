@@ -1,6 +1,5 @@
 package com.paymybuddy.webapp.service.implementation;
 
-import com.paymybuddy.webapp.controller.TransferController;
 import com.paymybuddy.webapp.model.PMBUser;
 import com.paymybuddy.webapp.repository.PMBUserRepository;
 import com.paymybuddy.webapp.service.PMBUserService;
@@ -16,7 +15,7 @@ import java.util.Optional;
 @Service
 public class PMBUserServiceImpl implements PMBUserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransferController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PMBUserServiceImpl.class);
 
     @Autowired
     private PMBUserRepository pmbUserRepository;
@@ -35,22 +34,17 @@ public class PMBUserServiceImpl implements PMBUserService {
         }
         String username = ((UserDetails)principal).getUsername();
         Optional<PMBUser> pmbUser = getByEmail(username);
-        if (pmbUser.isPresent()) {
-            return pmbUser.get();
-        }
-        return null;
+        return pmbUser.orElse(null);
     }
 
     @Override
     public String getWelcomeMessage(PMBUser user) {
-        String welcome = "Hello " + user.getFirstName() + " " + user.getLastName();
-        return welcome;
+        return "Hello " + user.getFirstName() + " " + user.getLastName();
     }
 
     @Override
     public String getBalanceMessage(PMBUser user) {
-        String balance ="You have <strong>" + user.getBalance() + "</strong> € on your account";
-        return balance;
+        return "You have <strong>" + user.getBalance() + "</strong> € on your account";
     }
 
     @Override

@@ -6,11 +6,11 @@ DROP TABLE if exists `users`;
 
 CREATE TABLE `users` (
   `user_id` bigint NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
   `first_name` varchar(55) DEFAULT NULL,
   `last_name` varchar(55) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `balance` double DEFAULT 0.0,
+  `balance` double NOT NULL DEFAULT 0.0,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `UK_users_email` (`email`)
 ) 

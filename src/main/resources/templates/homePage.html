@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,11 +31,21 @@
 	<h3 th:if="${welcome != null}" th:utext="${welcome}"></h3>
 	<h3 th:if="${balance != null}" th:utext="${balance}"></h3>
 
-	<p></p>
-	<a class="btn btn-primary" href="/home/transfer" role="button">transfer money</a>
+	<h3>&nbsp;</h3>
+	<p>To transfer money to your buddies</p>
+	<a class="btn btn-primary" href="/home/transfer" role="button" title="Pay your buddies">Transfer money</a>
 
-	<p></p>
-	<a class="btn btn-primary" href="/home/account" role="button">manage your account</a>
+	<p>&nbsp;</p>
+	<p>To add your buddies</p>
+	<a class="btn btn-primary" href="/home/connexion" role="button" title="Add your buddies">Add connexion</a>
+
+	<p>&nbsp;</p>
+	<p>To add or remove money from your "Pay My Buddy" account</p>
+	<a class="btn btn-primary" href="/home/account" role="button" title="Add or remove money">Manage your account</a>
+
+	<p>&nbsp;</p>
+	<p>To add a bank account</p>
+	<a class="btn btn-primary" href="/home/rib" role="button" title="Add a RIB">Add a bank account</a>
 
 
 </div>
