@@ -1,8 +1,7 @@
 package com.paymybuddy.webapp.Controller;
 
 import com.paymybuddy.webapp.controller.RibController;
-import com.paymybuddy.webapp.model.Rib;
-import com.paymybuddy.webapp.service.PMBSharedService;
+import com.paymybuddy.webapp.model.BankAccount;
 import com.paymybuddy.webapp.service.PMBUserService;
 import com.paymybuddy.webapp.service.RibService;
 import com.paymybuddy.webapp.service.implementation.UserDetailsServiceImpl;
@@ -21,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = RibController.class)
-public class RibControllerTest {
+public class BankAccountControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,35 +32,32 @@ public class RibControllerTest {
     private RibService ribService;
 
     @MockBean
-    private PMBSharedService pmbSharedService;
-
-    @MockBean
     private UserDetailsServiceImpl userDetailsService;
 
     @Test
     public void getRibPageWithoutAuthenticationTest() throws Exception {
-        mockMvc.perform(get("/home/rib"))
+        mockMvc.perform(get("/home/bankAccount"))
                 .andExpect(status().is(302))
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrlPattern("**/login"));
 
     }
 
     @WithMockUser
     @Test
     public void getRibPageTest() throws Exception {
-        List<Rib> ribList = new ArrayList<>();
-        mockMvc.perform(get("/home/rib"))
+        List<BankAccount> bankAccountList = new ArrayList<>();
+        mockMvc.perform(get("/home/bankAccount"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ribPage"))
+                .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasNoErrors())
-                .andExpect(model().attribute("ribs", ribList));
+                .andExpect(model().attribute("bankAccounts", bankAccountList));
 
     }
 
     @WithMockUser
     @Test
     public void addRibWithBlankNameTest() throws Exception {
-        mockMvc.perform(post("/home/rib")
+        mockMvc.perform(post("/home/bankAccount")
                 .param("ribName", "")
                 .param("accountOwner", "USER")
                 .param("countryCode", "fr76")
@@ -71,16 +67,16 @@ public class RibControllerTest {
                 .param("key", "55")
                 .param("bic", "ABCDEFGH"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ribPage"))
+                .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("ribDTO", "ribName", "NotBlank"));
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "ribName", "NotBlank"));
 
     }
 
     @WithMockUser
     @Test
     public void addRibWithBlankOwnerTest() throws Exception {
-        mockMvc.perform(post("/home/rib")
+        mockMvc.perform(post("/home/bankAccount")
                 .param("ribName", "My RIB")
                 .param("accountOwner", "")
                 .param("countryCode", "fr76")
@@ -90,16 +86,16 @@ public class RibControllerTest {
                 .param("key", "55")
                 .param("bic", "ABCDEFGH"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ribPage"))
+                .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("ribDTO", "accountOwner", "NotBlank"));
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "accountOwner", "NotBlank"));
 
     }
 
     @WithMockUser
     @Test
     public void addRibWithFormatIssuesTest() throws Exception {
-        mockMvc.perform(post("/home/rib")
+        mockMvc.perform(post("/home/bankAccount")
                 .param("ribName", "My RIB")
                 .param("accountOwner", "USER")
                 .param("countryCode", "")
@@ -109,14 +105,14 @@ public class RibControllerTest {
                 .param("key", "ab")
                 .param("bic", "ABCDEFGH1225"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ribPage"))
+                .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("ribDTO", "countryCode", "Pattern"))
-                .andExpect(model().attributeHasFieldErrorCode("ribDTO", "bankCode", "Pattern"))
-                .andExpect(model().attributeHasFieldErrorCode("ribDTO", "branchCode", "Pattern"))
-                .andExpect(model().attributeHasFieldErrorCode("ribDTO", "accountCode", "Pattern"))
-                .andExpect(model().attributeHasFieldErrorCode("ribDTO", "key", "Pattern"))
-                .andExpect(model().attributeHasFieldErrorCode("ribDTO", "bic", "Pattern"));
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "countryCode", "Pattern"))
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "bankCode", "Pattern"))
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "branchCode", "Pattern"))
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "accountCode", "Pattern"))
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "key", "Pattern"))
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "bic", "Pattern"));
 
     }
 

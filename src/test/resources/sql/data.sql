@@ -9,9 +9,9 @@ INSERT INTO testmybuddy.connexions ( connexion_name, user_user_id, beneficiary_u
 VALUE ("My connexion to Tom", 1, 2),
       ("My connexion to John", 1, 3);
 
-INSERT INTO testmybuddy.rib ( user_id, rib_name, account_owner, bic, iban )
+INSERT INTO testmybuddy.bank_accounts ( user_id, rib_name, account_owner, bic, iban )
 VALUE (1, "My Rib", "LOL BUDDY", "XXXXXXXX", "FR7622222888889999977777X00");
 
-INSERT INTO testmybuddy.transactions ( connexion_id, description, amount, transaction_date, monetizationpc )
+INSERT INTO testmybuddy.transactions ( connexion_id, description, amount, transaction_date, commission_pc )
 VALUE ( 1, "First transaction", 10.0, "2021-05-01", 0.5),
       ( 2, "Second transaction", 20.0, "2021-05-02", 0.5);

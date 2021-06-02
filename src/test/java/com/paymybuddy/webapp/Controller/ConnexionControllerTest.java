@@ -2,9 +2,8 @@ package com.paymybuddy.webapp.Controller;
 
 import com.paymybuddy.webapp.controller.ConnexionController;
 import com.paymybuddy.webapp.model.Connexion;
-import com.paymybuddy.webapp.model.constants.Response;
 import com.paymybuddy.webapp.service.ConnexionService;
-import com.paymybuddy.webapp.service.PMBSharedService;
+import com.paymybuddy.webapp.service.PMBUserService;
 import com.paymybuddy.webapp.service.implementation.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +32,13 @@ public class ConnexionControllerTest {
     private ConnexionService connexionService;
 
     @MockBean
-    private PMBSharedService pmbSharedService;
+    private PMBUserService pmbUserService;
 
     @Test
     public void getConnexionPageWithoutAuthenticationTest() throws Exception {
         mockMvc.perform(get("/home/connexion"))
                 .andExpect(status().is(302))
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrlPattern("**/login"));
     }
 
     @WithMockUser

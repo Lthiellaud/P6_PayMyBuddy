@@ -1,16 +1,17 @@
 package com.paymybuddy.webapp.service.implementation;
 
 import com.paymybuddy.webapp.model.BankMovement;
+import com.paymybuddy.webapp.model.DTO.AccountDTO;
 import com.paymybuddy.webapp.model.DTO.BankExchangeDTO;
-import com.paymybuddy.webapp.model.DTO.OperationDTO;
-import com.paymybuddy.webapp.model.Rib;
+import com.paymybuddy.webapp.model.BankAccount;
 import com.paymybuddy.webapp.model.constants.Response;
 import com.paymybuddy.webapp.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -29,36 +30,49 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private CallBankService callBankService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+
     @Override
-    public Response operateMovement(OperationDTO operationDTO) {
-        Optional<Rib> r =ribService.getById(operationDTO.getRibId());
+    public Response operateMovement(AccountDTO accountDTO) {
+        Optional<BankAccount> r =ribService.getById(accountDTO.getRibId());
         if (!r.isPresent()) {
+            LOGGER.debug(Response.DATA_ISSUE + " for account operation : " + accountDTO.getRibId()
+                    + ", selected operation : " + accountDTO.getDebitCredit()
+                    + ", amount : " + accountDTO.getAmount());
             return Response.DATA_ISSUE;
         }
-        Rib rib = r.get();
+        BankAccount bankAccount = r.get();
 
-        if (operationDTO.getAmount()  * operationDTO.getDebitCredit() + rib.getUser().getBalance() < 0) {
+        if (accountDTO.getAmount()  * accountDTO.getDebitCredit() + bankAccount.getUser().getBalance() < 0) {
+            LOGGER.debug(Response.NOT_ENOUGH_MONEY + " for account operation : " + accountDTO.getRibId()
+                    + ", selected operation : " + accountDTO.getDebitCredit()
+                    + ", amount : " + accountDTO.getAmount());
             return Response.NOT_ENOUGH_MONEY;
         }
         Response response = Response.SAVE_KO;
         try {
-            response = registerMovement(operationDTO, rib);
+            response = registerMovement(accountDTO, bankAccount);
         } catch (Exception e) {
+            LOGGER.debug(response + " for account operation : " + accountDTO.getRibId()
+                    + ", selected operation : " + accountDTO.getDebitCredit()
+                    + ", amount : " + accountDTO.getAmount());
             return response;
         }
-
+        LOGGER.debug(response + " for account operation : " + accountDTO.getRibId()
+                + ", selected operation : " + accountDTO.getDebitCredit()
+                + ", amount : " + accountDTO.getAmount());
         return response;
     }
 
     @Override
     @Transactional
-    public Response registerMovement(OperationDTO operationDTO, Rib rib) {
+    public Response registerMovement(AccountDTO accountDTO, BankAccount bankAccount) {
         //Set the new bank movement
         BankMovement bankMovement = new BankMovement();
-        bankMovement.setAmount(operationDTO.getAmount() * operationDTO.getDebitCredit());
+        bankMovement.setAmount(accountDTO.getAmount() * accountDTO.getDebitCredit());
         bankMovement.setMovementDate(new Date());
-        bankMovement.setCaption((operationDTO.getDebitCredit() == -1 ? "Get my money" : "Fund my account"));
-        bankMovement.setRib(rib);
+        bankMovement.setCaption((accountDTO.getDebitCredit() == -1 ? "Get my money" : "Fund my account"));
+        bankMovement.setBankAccount(bankAccount);
         bankMovementService.createMovement(bankMovement);
 
         //send the movement to the bank and get a response
@@ -69,7 +83,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         //update the user
-        pmbUserService.updateUserBalance(rib.getUser(), bankMovement.getAmount());
+        pmbUserService.updateUserBalance(bankAccount.getUser(), bankMovement.getAmount());
 
         return Response.OK;
     }

@@ -28,5 +28,5 @@ public class BankMovement implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "rib_id", nullable = false)
-    private Rib rib;
+    private BankAccount bankAccount;
 }

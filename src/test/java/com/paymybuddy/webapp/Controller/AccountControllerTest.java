@@ -1,12 +1,12 @@
 package com.paymybuddy.webapp.Controller;
 
 import com.paymybuddy.webapp.controller.AccountController;
+import com.paymybuddy.webapp.model.BankAccount;
 import com.paymybuddy.webapp.model.BankMovement;
-import com.paymybuddy.webapp.model.Rib;
 import com.paymybuddy.webapp.service.AccountService;
 import com.paymybuddy.webapp.service.BankMovementService;
-import com.paymybuddy.webapp.service.PMBSharedService;
 import com.paymybuddy.webapp.service.PMBUserService;
+import com.paymybuddy.webapp.service.RibService;
 import com.paymybuddy.webapp.service.implementation.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class AccountControllerTest {
     private AccountService accountService;
 
     @MockBean
-    private PMBSharedService pmbSharedService;
+    private RibService ribService;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
@@ -47,20 +47,20 @@ public class AccountControllerTest {
     public void getAccountPageWithoutAuthenticationTest() throws Exception {
         mockMvc.perform(get("/home/account"))
                 .andExpect(status().is(302))
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrlPattern("**/login"));
 
     }
 
     @WithMockUser
     @Test
     public void getAccountPageTest() throws Exception {
-        List<Rib> ribList = new ArrayList<>();
+        List<BankAccount> bankAccountList = new ArrayList<>();
         List<BankMovement> movementList = new ArrayList<>();
         mockMvc.perform(get("/home/account"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasNoErrors())
-                .andExpect(model().attribute("ribs", ribList))
+                .andExpect(model().attribute("bankAccounts", bankAccountList))
                 .andExpect(model().attribute("bankMovements", movementList));
 
     }
@@ -75,7 +75,7 @@ public class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("operationDTO", "ribId", "Positive"));
+                .andExpect(model().attributeHasFieldErrorCode("accountDTO", "ribId", "Positive"));
 
 
     }
@@ -90,7 +90,7 @@ public class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("operationDTO", "debitCredit", "Min"));
+                .andExpect(model().attributeHasFieldErrorCode("accountDTO", "debitCredit", "Min"));
 
 
     }
@@ -105,7 +105,7 @@ public class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("operationDTO", "amount", "Positive"));
+                .andExpect(model().attributeHasFieldErrorCode("accountDTO", "amount", "Positive"));
 
     }
 

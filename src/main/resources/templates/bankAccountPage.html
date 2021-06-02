@@ -33,19 +33,19 @@
 		</div>
 		<div class="container special">
 			<form method="post"
-				  th:action="@{/home/rib}" th:object="${ribDTO}">
+				  th:action="@{/home/bankAccount}" th:object="${bankAccountDTO}">
 				<div class="col-md-3">
 					<label for="ribName">RIB Name </label>
 					<input type="text" th:field="*{ribName}" class="form-control" id="ribName">
 					<div style="color: red;" th:if="${#fields.hasErrors('ribName')}" th:errors="*{ribName}">
-						rib name Error
+						bankAccount name Error
 					</div>
 				</div>
 				<div class="col-md-3">
 					<label for="ribName">Account Owner</label>
 					<input type="text" th:field="*{accountOwner}" class="form-control" id="accountOwner">
 					<div style="color: red;" th:if="${#fields.hasErrors('accountOwner')}" th:errors="*{accountOwner}">
-						rib name Error
+						bankAccount name Error
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -114,23 +114,23 @@
 		</div>
 		<div class="container special">
 			<p></p>
-			<h3 class="col-md-12">Your ribs</h3>
+			<h3 class="col-md-12">Your bankAccounts</h3>
 			<div class="col-md-12">
 				<div class="table-responsive border border-dark">
 					<table class="table table-striped table-sm">
 						<thead class="text-white bg-success">
 						<tr>
-							<th>rib name</th>
+							<th>bankAccount name</th>
 							<th>IBAN</th>
 						</tr>
 						</thead>
 						<tbody>
-						<tr th:if="${#lists.isEmpty(ribs)}">
-							<td colspan="3">No rib registered</td>
+						<tr th:if="${#lists.isEmpty(bankAccounts)}">
+							<td colspan="3">No bankAccount registered</td>
 						</tr>
-						<tr th:each="rib: ${ribs}">
-							<td><span th:text="${rib.ribName}"> rib </span></td>
-							<td><span th:text="${rib.iban}"> IBAN </span></td>
+						<tr th:each="bankAccount: ${bankAccounts}">
+							<td><span th:text="${bankAccount.ribName}"> bankAccount </span></td>
+							<td><span th:text="${bankAccount.iban}"> IBAN </span></td>
 						</tr>
 						</tbody>
 					</table>

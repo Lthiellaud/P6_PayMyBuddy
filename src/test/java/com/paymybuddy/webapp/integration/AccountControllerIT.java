@@ -34,7 +34,7 @@ public class AccountControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasNoErrors())
-               .andExpect(model().attribute("message", Response.OK.getMessage()));
+                .andExpect(model().attribute("message", Response.OK.getMessage()));
 
 
     }
@@ -63,7 +63,7 @@ public class AccountControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrors("operationDTO", "amount"));
+                .andExpect(model().attributeHasFieldErrors("accountDTO", "amount"));
 
 
     }

@@ -1,5 +1,8 @@
 package com.paymybuddy.webapp.model.constants;
 
+/**
+ * list of possible result for each service and associated messages
+ */
 public enum Response {
     OK("Successful operation"),
     NOT_ENOUGH_MONEY("You haven't enough money on your account"),

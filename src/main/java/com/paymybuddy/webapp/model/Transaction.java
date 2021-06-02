@@ -28,7 +28,8 @@ public class Transaction implements Serializable {
     private Date transactionDate;
     @NotNull
     private double amount;
-    private double monetizationPC;
+    private double commissionPc;
+    private Long billId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "connexion_id", nullable = false)

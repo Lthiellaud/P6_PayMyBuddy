@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * Data needed to add a connexion (= a beneficiary)
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

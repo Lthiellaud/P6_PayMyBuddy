@@ -1,9 +1,10 @@
 package com.paymybuddy.webapp.controller;
 
-import com.paymybuddy.webapp.model.Rib;
-import com.paymybuddy.webapp.model.DTO.RibDTO;
+import com.paymybuddy.webapp.model.BankAccount;
+import com.paymybuddy.webapp.model.DTO.BankAccountDTO;
+import com.paymybuddy.webapp.model.PMBUser;
 import com.paymybuddy.webapp.model.constants.Response;
-import com.paymybuddy.webapp.service.PMBSharedService;
+import com.paymybuddy.webapp.service.PMBUserService;
 import com.paymybuddy.webapp.service.RibService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,10 @@ import javax.validation.Valid;
 import java.util.List;
 
 
+/**
+ * To manage the URL /home/bankAccount (GET/POST)
+ * To add rib (bank account) to one PMB Account
+ */
 @Controller
 public class RibController {
 
@@ -26,36 +31,48 @@ public class RibController {
     private RibService ribService;
     
     @Autowired
-    private PMBSharedService pmbSharedService;
+    private PMBUserService pmbUserService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RibController.class);
 
-    @ModelAttribute("ribDTO")
-    public RibDTO getRibDTOObject(){
-        return new RibDTO();
+    @ModelAttribute("bankAccountDTO")
+    public BankAccountDTO getBankAccountDTOObject(){
+        return new BankAccountDTO();
     }
 
-    @GetMapping("/home/rib")
+    @GetMapping("/home/bankAccount")
     public String getRibPage(Model model) {
-        List<Rib> ribs = pmbSharedService.getUserRib();
-        model.addAttribute("ribs", ribs);
-        return "ribPage";
+        PMBUser user = pmbUserService.getCurrentUser();
+        LOGGER.debug("get /home/bankAccount - Access");
+        List<BankAccount> bankAccounts = ribService.getRibsByUser(user);
+        LOGGER.debug("get /home/bankAccount - Number of rib : " + bankAccounts.size());
+        model.addAttribute("bankAccounts", bankAccounts);
+        return "bankAccountPage";
     }
     
-    @PostMapping("/home/rib")
-    public String addRib(@ModelAttribute ("ribDTO") @Valid RibDTO ribDTO,
+    @PostMapping("/home/bankAccount")
+    public String addRib(@ModelAttribute ("bankAccountDTO") @Valid BankAccountDTO bankAccountDTO,
                                final BindingResult bindingResult, Model model) {
+        LOGGER.debug("post /home/bankAccount - BankAccount name: " + bankAccountDTO.getRibName()
+                + ", account owner:" + bankAccountDTO.getAccountOwner() + ""
+                + ", RIB:" + bankAccountDTO.getCountryCode()
+                + bankAccountDTO.getBankCode()
+                + bankAccountDTO.getBranchCode()
+                + bankAccountDTO.getAccountCode()
+                + bankAccountDTO.getKey()
+                + ", BIC:" + bankAccountDTO.getBic());
         if (bindingResult.hasErrors()) {
             return getRibPage(model);
         }
-        Response response= ribService.processRib(ribDTO);
+        Response response = ribService.processRib(bankAccountDTO);
+        LOGGER.debug("post /home/bankAccount - operation result : " + response);
         switch (response) {
             case OK:
-                model.addAttribute("RibDTO", new RibDTO());
+                model.addAttribute("bankAccountDTO", new BankAccountDTO());
                 model.addAttribute("message", response.getMessage());
                 break;
             case EXISTING_RIB_NAME:
-                bindingResult.rejectValue("ribName", "error.ribDTO", response.getMessage());
+                bindingResult.rejectValue("ribName", "error.bankAccountDTO", response.getMessage());
                 break;
             case EXISTING_IBAN:
             case IBAN_BIC_KO:
@@ -64,6 +81,7 @@ public class RibController {
                 break;
             default:
         }
+        LOGGER.debug("post /home/bankAccount - bindingResult : " + bindingResult.hasErrors());
         return getRibPage(model);
     }
     

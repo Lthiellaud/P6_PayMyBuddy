@@ -30,6 +30,7 @@ public class PMBUserServiceImpl implements PMBUserService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (!(principal instanceof UserDetails)) {
+            LOGGER.debug("getCurrentUser - Principal data issue");
             return null;
         }
         String username = ((UserDetails)principal).getUsername();

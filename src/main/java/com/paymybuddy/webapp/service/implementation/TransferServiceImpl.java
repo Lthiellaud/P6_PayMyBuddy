@@ -1,9 +1,7 @@
 package com.paymybuddy.webapp.service.implementation;
 
-import com.paymybuddy.webapp.controller.TransferController;
 import com.paymybuddy.webapp.model.Connexion;
 import com.paymybuddy.webapp.model.DTO.TransferDTO;
-import com.paymybuddy.webapp.model.PMBUser;
 import com.paymybuddy.webapp.model.Transaction;
 import com.paymybuddy.webapp.model.constants.Response;
 import com.paymybuddy.webapp.service.ConnexionService;
@@ -32,25 +30,37 @@ public class TransferServiceImpl implements TransferService {
     @Autowired
     private TransactionService transactionService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransferController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransferServiceImpl.class);
 
     @Override
     public Response processTransfer(TransferDTO transferDTO) {
         Optional<Connexion> c = connexionService.getById(transferDTO.getConnexionId());
         if (!c.isPresent()) {
+            LOGGER.debug(Response.DATA_ISSUE + " for transfer: " + transferDTO.getConnexionId()
+                    + ", description: " + transferDTO.getDescription()
+                    + ", amount " + transferDTO.getAmount());
             return Response.DATA_ISSUE;
         }
         Connexion connexion = c.get();
         //check if there is enough money on the user account
         if (connexion.getPmbUser().getBalance() < transferDTO.getAmount()) {
+            LOGGER.debug(Response.NOT_ENOUGH_MONEY + " for transfer: " + transferDTO.getConnexionId()
+                    + ", description: " + transferDTO.getDescription()
+                    + ", amount " + transferDTO.getAmount());
             return Response.NOT_ENOUGH_MONEY;
         }
         Response response = Response.SAVE_KO;
         try {
             response = registerTransfer(transferDTO, connexion);
         } catch (Exception e) {
+            LOGGER.debug(response + " for transfer: " + transferDTO.getConnexionId()
+                    + ", description: " + transferDTO.getDescription()
+                    + ", amount " + transferDTO.getAmount());
             return response;
         }
+        LOGGER.debug(response + " for transfer: " + transferDTO.getConnexionId()
+                + ", description: " + transferDTO.getDescription()
+                + ", amount " + transferDTO.getAmount());
         return response;
 
     }
@@ -63,7 +73,7 @@ public class TransferServiceImpl implements TransferService {
         transaction.setConnexion(connexion);
         transaction.setDescription(transferDTO.getDescription());
         transaction.setAmount(transferDTO.getAmount());
-        transaction.setMonetizationPC(COMMISSION_PC);
+        transaction.setCommissionPc(COMMISSION_PC);
         transaction.setTransactionDate(new Date());
         transactionService.createTransaction(transaction);
 

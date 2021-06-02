@@ -27,8 +27,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransferController.class);
 
     /**
-     * To get User details from an email
-     * @param email
+     * To get User details from an email (Grant authority = USER)
+     * @param email the given email
      * @return User details
      */
     @Override
@@ -46,9 +46,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     /**
-     * Build of th User details
-     * @param PMBUser
-     * @param authorities
+     * Build of the User details
+     * @param PMBUser The user
+     * @param authorities authorities of the user
      * @return User details
      */
     private UserDetails buildUserForAuthentication(PMBUser PMBUser, Set<GrantedAuthority> authorities) {
