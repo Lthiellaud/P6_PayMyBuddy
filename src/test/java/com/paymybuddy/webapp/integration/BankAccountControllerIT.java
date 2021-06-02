@@ -19,17 +19,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Sql("/sql/schema.sql")
 @Sql("/sql/data.sql")
-public class RibControllerIT {
+public class BankAccountControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
 
     @WithUserDetails("tom.buddy@mail.com")
     @Test
-    public void addRibTest() throws Exception {
-        mockMvc.perform(post("/home/rib")
-                .param("ribName", "My RIB")
-                .param("accountOwner", "Tom Buddy")
+    public void addBankAccountTest() throws Exception {
+        mockMvc.perform(post("/home/bankAccount")
+                .param("bankAccountName", "My RIB")
+                .param("accountHolder", "Tom Buddy")
                 .param("countryCode", "fr76")
                 .param("bankCode", "11111")
                 .param("branchCode", "11111")
@@ -37,7 +37,7 @@ public class RibControllerIT {
                 .param("key", "55")
                 .param("bic", "ABCDEFGH"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ribPage"))
+                .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasNoErrors())
                 .andExpect(model().attribute("message", Response.OK.getMessage()));
 
@@ -45,10 +45,10 @@ public class RibControllerIT {
 
     @WithMockUser
     @Test
-    public void addRibSaveKOTest() throws Exception {
-        mockMvc.perform(post("/home/rib")
-                .param("ribName", "My RIB")
-                .param("accountOwner", "USER")
+    public void addBankAccountSaveKOTest() throws Exception {
+        mockMvc.perform(post("/home/bankAccount")
+                .param("bankAccountName", "My RIB")
+                .param("accountHolder", "USER")
                 .param("countryCode", "fr76")
                 .param("bankCode", "11111")
                 .param("branchCode", "11111")
@@ -56,7 +56,7 @@ public class RibControllerIT {
                 .param("key", "55")
                 .param("bic", "ABCDEFGH"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ribPage"))
+                .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasNoErrors())
                 .andExpect(model().attribute("message", Response.SAVE_KO.getMessage()));
 
@@ -64,10 +64,10 @@ public class RibControllerIT {
 
     @WithUserDetails("lol.buddy@mail.com")
     @Test
-    public void addRibWithExistingIBANTest() throws Exception {
-        mockMvc.perform(post("/home/rib")
-                .param("ribName", "My new RIB")
-                .param("accountOwner", "USER")
+    public void addBankAccountWithExistingIBANTest() throws Exception {
+        mockMvc.perform(post("/home/bankAccount")
+                .param("bankAccountName", "My new RIB")
+                .param("accountHolder", "USER")
                 .param("countryCode", "fr76")
                 .param("bankCode", "22222")
                 .param("branchCode", "88888")
@@ -75,7 +75,7 @@ public class RibControllerIT {
                 .param("key", "00")
                 .param("bic", "XXXXXXXX"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ribPage"))
+                .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasNoErrors())
                 .andExpect(model().attribute("message", Response.EXISTING_IBAN.getMessage()));
 
@@ -83,10 +83,10 @@ public class RibControllerIT {
 
     @WithUserDetails("lol.buddy@mail.com")
     @Test
-    public void addRibWithExistingNameTest() throws Exception {
-        mockMvc.perform(post("/home/rib")
-                .param("ribName", "My Rib")
-                .param("accountOwner", "LOL BUDDY")
+    public void addBankAccountWithExistingNameTest() throws Exception {
+        mockMvc.perform(post("/home/bankAccount")
+                .param("bankAccountName", "My Rib")
+                .param("accountHolder", "LOL BUDDY")
                 .param("countryCode", "fr76")
                 .param("bankCode", "11111")
                 .param("branchCode", "11111")
@@ -94,9 +94,9 @@ public class RibControllerIT {
                 .param("key", "55")
                 .param("bic", "ABCDEFGH"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ribPage"))
+                .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrors("ribDTO", "ribName"));
+                .andExpect(model().attributeHasFieldErrors("bankAccountDTO", "bankAccountName"));
 
     }
 

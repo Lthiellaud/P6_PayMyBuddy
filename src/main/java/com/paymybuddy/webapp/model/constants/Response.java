@@ -1,5 +1,8 @@
 package com.paymybuddy.webapp.model.constants;
 
+/**
+ * list of possible result for each service and associated messages
+ */
 public enum Response {
     OK("Successful operation"),
     NOT_ENOUGH_MONEY("You haven't enough money on your account"),
@@ -8,7 +11,7 @@ public enum Response {
     EXISTING_CONNEXION("This email is already used for a connexion"),
     EXISTING_CONNEXION_NAME("This connexion name already exists"),
     EXISTING_IBAN("This IBAN / BIC is already registered"),
-    EXISTING_RIB_NAME("This rib name already exists"),
+    EXISTING_BANK_ACCOUNT_NAME("This bank account name already exists"),
     EXISTING_USER("This user mail already exists, please sign in to access Pay My Buddy"),
     REGISTERED("Thank you for registering, you can now log in"),
     MISMATCH_PASSWORD("Error in repeating password, please retry"),

@@ -36,7 +36,7 @@ public class PMBUser implements Serializable {
     private Set<Connexion> beneficiaryConnexions;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Rib> ribs;
+    private Set<BankAccount> bankAccounts;
 
 
 

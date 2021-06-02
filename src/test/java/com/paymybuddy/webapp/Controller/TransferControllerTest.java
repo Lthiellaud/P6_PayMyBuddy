@@ -2,7 +2,8 @@ package com.paymybuddy.webapp.Controller;
 
 import com.paymybuddy.webapp.controller.TransferController;
 import com.paymybuddy.webapp.model.Connexion;
-import com.paymybuddy.webapp.service.PMBSharedService;
+import com.paymybuddy.webapp.service.ConnexionService;
+import com.paymybuddy.webapp.service.PMBUserService;
 import com.paymybuddy.webapp.service.TransactionService;
 import com.paymybuddy.webapp.service.TransferService;
 import com.paymybuddy.webapp.service.implementation.UserDetailsServiceImpl;
@@ -33,7 +34,10 @@ public class TransferControllerTest {
     private TransactionService transactionService;
 
     @MockBean
-    private PMBSharedService pmbSharedService;
+    private ConnexionService connexionService;
+
+    @MockBean
+    private PMBUserService pmbUserService;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
@@ -42,7 +46,7 @@ public class TransferControllerTest {
     public void getTransferPageWithoutAuthenticationTest() throws Exception {
         mockMvc.perform(get("/home/transfer"))
                 .andExpect(status().is(302))
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrlPattern("**/login"));
 
     }
 

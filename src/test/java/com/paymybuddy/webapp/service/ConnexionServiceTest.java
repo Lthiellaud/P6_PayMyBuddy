@@ -52,9 +52,7 @@ public class ConnexionServiceTest {
         beneficiary.setBalance(40.0);
         beneficiary.setConnexions(connexions);
 
-        connexionDTO = new ConnexionDTO();
-        connexionDTO.setConnexionName("The connexion");
-        connexionDTO.setConnexionMail("beneficiary@mail.com");
+        connexionDTO = new ConnexionDTO("The connexion", "beneficiary@mail.com");
 
         connexion = new Connexion();
         connexion.setConnexionId(1L);

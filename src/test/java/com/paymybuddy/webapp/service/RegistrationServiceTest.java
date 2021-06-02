@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class RegistrationServiceImplTest {
+class RegistrationServiceTest {
 
     @Autowired
     private RegistrationServiceImpl registrationService;

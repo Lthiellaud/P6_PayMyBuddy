@@ -41,36 +41,76 @@ public class RegistrationControllerTest {
 
 
     @Test
-    public void registerMissingMandatoryFieldsTest() throws Exception {
+    public void registerMissingMandatoryFieldsEmailTest() throws Exception {
         mockMvc.perform(post("/register")
                 .param("email", "")
+                .param("firstName", "prénom")
+                .param("lastName", "nom")
+                .param("password", "ABCD1234")
+                .param("repeatPassword", "ABCD123456789123"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("registrationPage"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeHasFieldErrorCode("userDTO", "email", "NotBlank"));
+
+    }
+
+    @Test
+    public void registerMissingMandatoryFieldsFirstNameTest() throws Exception {
+        mockMvc.perform(post("/register")
+                .param("email", "test@mail.com")
                 .param("firstName", "")
+                .param("lastName", "Nom")
+                .param("password", "ABCD1234")
+                .param("repeatPassword", "ABCD123456789123"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("registrationPage"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeHasFieldErrorCode("userDTO", "firstName", "NotBlank"));
+
+    }
+
+    @Test
+    public void registerMissingMandatoryFieldsLastNameTest() throws Exception {
+        mockMvc.perform(post("/register")
+                .param("email", "test@mail.com")
+                .param("firstName", "prénom")
                 .param("lastName", "")
                 .param("password", "ABCD1234")
                 .param("repeatPassword", "ABCD123456789123"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registrationPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("userDTO", "email", "NotBlank"))
-                .andExpect(model().attributeHasFieldErrorCode("userDTO", "firstName", "NotBlank"))
                 .andExpect(model().attributeHasFieldErrorCode("userDTO", "lastName", "NotBlank"));
 
     }
 
     @Test
-    public void registerPasswordTooShortOrTooLargeTest() throws Exception {
+    public void registerPasswordTooShortTest() throws Exception {
         mockMvc.perform(post("/register")
                 .param("email", "new.buddy@mail.com")
                 .param("firstName", "New")
                 .param("lastName", "Buddy")
                 .param("password", "ABCD")
-                .param("repeatPassword", "ABCD1234567891235"))
+                .param("repeatPassword", "ABCD"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registrationPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("userDTO", "password", "Size"))
-                .andExpect(model().attributeHasFieldErrorCode("userDTO", "repeatPassword", "Size"));
+                .andExpect(model().attributeHasFieldErrorCode("userDTO", "password", "Size"));
         }
 
+    @Test
+    public void registerPasswordTooLargeTest() throws Exception {
+        mockMvc.perform(post("/register")
+                .param("email", "new.buddy@mail.com")
+                .param("firstName", "New")
+                .param("lastName", "Buddy")
+                .param("password", "012345678901234567")
+                .param("repeatPassword", "012345678901234567"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("registrationPage"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeHasFieldErrorCode("userDTO", "password", "Size"));
+    }
 
 }

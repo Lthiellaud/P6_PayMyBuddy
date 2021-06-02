@@ -7,27 +7,27 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * Rib class defines the RIBs available for a user.
+ * BankAccount class defines the RIBs available for a user.
  */
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Rib")
-public class Rib implements Serializable {
+@Table(name = "bank_accounts")
+public class BankAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ribId;
-    private String ribName;
+    private Long bankAccountId;
+    private String bankAccountName;
     private String iban;
     private String bic;
-    private String accountOwner;
+    private String accountHolder;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private PMBUser user;
 
-    @OneToMany(mappedBy = "rib", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<BankMovement> bankMovements;
 }

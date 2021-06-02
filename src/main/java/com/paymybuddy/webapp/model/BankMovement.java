@@ -27,6 +27,6 @@ public class BankMovement implements Serializable {
     private Double amount;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rib_id", nullable = false)
-    private Rib rib;
+    @JoinColumn(name = "bank_account_id", nullable = false)
+    private BankAccount bankAccount;
 }

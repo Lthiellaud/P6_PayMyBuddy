@@ -28,14 +28,13 @@ public class AccountControllerIT {
     @Test
     public void manageAccountTest() throws Exception {
        mockMvc.perform(post("/home/account")
-                    .param("ribId", "1")
+                    .param("bankAccountId", "1")
                     .param("debitCredit", "1")
                     .param("amount", "10"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasNoErrors())
-               .andExpect(model().attribute("message", Response.OK.getMessage()));
-
+                .andExpect(model().attribute("message", Response.OK.getMessage()));
 
     }
 
@@ -43,7 +42,7 @@ public class AccountControllerIT {
     @Test
     public void manageAccountWithNonExistingRibTest() throws Exception {
         mockMvc.perform(post("/home/account")
-                .param("ribId", "10")
+                .param("bankAccountId", "10")
                 .param("debitCredit", "-1")
                 .param("amount", "10"))
                 .andExpect(status().isOk())
@@ -57,14 +56,13 @@ public class AccountControllerIT {
     @Test
     public void manageAccountWithAmountMinus1000Test() throws Exception {
         mockMvc.perform(post("/home/account")
-                .param("ribId", "1")
+                .param("bankAccountId", "1")
                 .param("debitCredit", "-1")
                 .param("amount", "1000"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrors("operationDTO", "amount"));
-
+                .andExpect(model().attributeHasFieldErrors("accountDTO", "amount"));
 
     }
 

@@ -33,7 +33,7 @@ public class ConnexionServiceImpl implements ConnexionService {
     }
 
     @Override
-    public Connexion createConnexion(Connexion connexion) throws Exception {
+    public Connexion createConnexion(Connexion connexion) {
         return connexionRepository.save(connexion);
 
     }
@@ -89,7 +89,5 @@ public class ConnexionServiceImpl implements ConnexionService {
 
         return Response.OK;
     }
-
-
 
 }

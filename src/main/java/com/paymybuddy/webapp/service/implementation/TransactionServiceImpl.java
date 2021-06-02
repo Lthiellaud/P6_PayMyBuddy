@@ -17,10 +17,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> getTransactions(List<Connexion> connexions) {
-        List<Transaction> transactions = transactionRepository
+        return transactionRepository
                 .findAllByConnexionInOrderByTransactionDateDesc(connexions);
-
-        return transactions;
     }
 
     @Override

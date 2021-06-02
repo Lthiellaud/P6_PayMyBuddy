@@ -5,7 +5,11 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
+/**
+ * To get user information
+ */
 public class UserUtil {
+
     public static String toString(User user) {
         StringBuilder sb = new StringBuilder();
 

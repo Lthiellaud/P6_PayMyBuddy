@@ -75,10 +75,6 @@ public class TransferServiceIT {
         connexion.setPmbUser(user);
         connexion.setConnexionName("The connexion");
 
-//        Set<Connexion> connexions = new HashSet<>();
-//        connexions.add(connexion);
-//        user.setConnexions(connexions);
-
 
     }
 

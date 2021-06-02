@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,24 +32,24 @@
         <div class="col-md-6"></div>
         <div class="col-md-2">
             <label for="button1" class="visually-hidden">New bank account</label>
-            <a class="btn btn-primary btn-sm w-100" href="/home/rib" role="button" id="button1">Add a bank account</a>
+            <a class="btn btn-primary btn-sm w-100" href="/home/bankAccount" role="button" id="button1">Add a bank account</a>
         </div>
         <p> </p>
         <p class="col-md-12" th:if="${balance != null}" th:utext="${balance}">Balance</p>
     </div>
     <div class="container special">
         <form method="post"
-              th:action="@{/home/account}" th:object="${operationDTO}">
+              th:action="@{/home/account}" th:object="${accountDTO}">
             <div class="col-md-3">
-                <label for="rib">Bank account</label>
-                <select class="form-select" th:field="*{ribId}" id="rib" required >
+                <label for="bankAccount">Bank account</label>
+                <select class="form-select" th:field="*{bankAccountId}" id="bankAccount" required >
                     <option selected="selected" value="0">Select a bank account</option>
-                    <option th:each="rib: ${ribs}"
-                            th:value="${rib.ribId}"
-                            th:text="${rib.ribName}"></option>
+                    <option th:each="bankAccount: ${bankAccounts}"
+                            th:value="${bankAccount.bankAccountId}"
+                            th:text="${bankAccount.bankAccountName}"></option>
                 </select>
-                <div style="color: red;" th:if="${#fields.hasErrors('ribId')}" th:errors="*{ribId}">
-                    rib Error
+                <div style="color: red;" th:if="${#fields.hasErrors('bankAccountId')}" th:errors="*{bankAccountId}">
+                    bankAccount Error
                 </div>
             </div>
             <div class="col-md-4">
@@ -97,7 +97,7 @@
                         <td colspan="3">No bank movement registered</td>
                     </tr>
                     <tr th:each="bankMovement: ${bankMovements}">
-                        <td><span th:text="${bankMovement.rib.ribName}"> rib </span></td>
+                        <td><span th:text="${bankMovement.bankAccount.bankAccountName}"> bankAccount </span></td>
                         <td><span th:text="${bankMovement.caption}"> Description </span></td>
                         <td><span th:text="${bankMovement.amount}"> Amount </span>
                         </td>
