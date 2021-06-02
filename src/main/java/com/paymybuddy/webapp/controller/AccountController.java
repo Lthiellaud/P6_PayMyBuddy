@@ -8,7 +8,7 @@ import com.paymybuddy.webapp.model.constants.Response;
 import com.paymybuddy.webapp.service.AccountService;
 import com.paymybuddy.webapp.service.BankMovementService;
 import com.paymybuddy.webapp.service.PMBUserService;
-import com.paymybuddy.webapp.service.RibService;
+import com.paymybuddy.webapp.service.BankAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class AccountController {
     private BankMovementService bankMovementService;
 
     @Autowired
-    private RibService ribService;
+    private BankAccountService bankAccountService;
 
     @Autowired
     private AccountService accountService;
@@ -55,7 +55,7 @@ public class AccountController {
         LOGGER.debug("get /home/account - Access ");
         model.addAttribute("balance", pmbUserService.getBalanceMessage(user));
 
-        List<BankAccount> bankAccounts = ribService.getRibsByUser(user);
+        List<BankAccount> bankAccounts = bankAccountService.getBankAccountsByUser(user);
         LOGGER.debug("get /home/account - Number of RIBs : " + bankAccounts.size());
         model.addAttribute("bankAccounts", bankAccounts);
 
@@ -73,7 +73,7 @@ public class AccountController {
     @PostMapping("/home/account")
     public String manageAccount(@ModelAttribute("accountDTO") @Valid AccountDTO accountDTO,
                                       final BindingResult bindingResult, Model model) {
-        LOGGER.debug("post /home/account - Selected BankAccount : " + accountDTO.getRibId()
+        LOGGER.debug("post /home/account - Selected BankAccount : " + accountDTO.getBankAccountId()
                 + ", selected operation : " + accountDTO.getDebitCredit()
                 + ", amount : " + accountDTO.getAmount());
         if (bindingResult.hasErrors()) {

@@ -18,11 +18,11 @@ import java.util.Set;
 public class BankAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ribId;
-    private String ribName;
+    private Long bankAccountId;
+    private String bankAccountName;
     private String iban;
     private String bic;
-    private String accountOwner;
+    private String accountHolder;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

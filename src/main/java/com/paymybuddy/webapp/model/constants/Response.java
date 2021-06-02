@@ -11,7 +11,7 @@ public enum Response {
     EXISTING_CONNEXION("This email is already used for a connexion"),
     EXISTING_CONNEXION_NAME("This connexion name already exists"),
     EXISTING_IBAN("This IBAN / BIC is already registered"),
-    EXISTING_RIB_NAME("This rib name already exists"),
+    EXISTING_BANK_ACCOUNT_NAME("This bank account name already exists"),
     EXISTING_USER("This user mail already exists, please sign in to access Pay My Buddy"),
     REGISTERED("Thank you for registering, you can now log in"),
     MISMATCH_PASSWORD("Error in repeating password, please retry"),

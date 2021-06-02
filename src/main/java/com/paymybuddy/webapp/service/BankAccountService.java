@@ -11,50 +11,50 @@ import java.util.Optional;
 /**
  * Service used by BankAccount controller and to manage BankAccount data
  */
-public interface RibService {
+public interface BankAccountService {
 
     /**
-     * gives the list of rib of a user
+     * gives the list of bank account of a user
      * @param user the given user
-     * @return the list of founded rib
+     * @return the list of founded bank account
      */
-    List<BankAccount> getRibsByUser(PMBUser user);
+    List<BankAccount> getBankAccountsByUser(PMBUser user);
 
     /**
-     * gives a rib from an id
-     * @param ribId the given id
-     * @return the rib if founded
+     * gives a bank account from an id
+     * @param bankAccountId the given id
+     * @return the bank account if founded
      */
-    Optional<BankAccount> getById(Long ribId);
+    Optional<BankAccount> getById(Long bankAccountId);
 
     /**
      * creates a new bankAccount
      * @param bankAccount the new bankAccount to be created
      * @return the created bankAccount
      */
-    BankAccount createRib(BankAccount bankAccount);
+    BankAccount createBankAccount(BankAccount bankAccount);
 
     /**
-     * gives a RIB from a user and a rib name
-     * @param ribName the given rib name
+     * gives a BANK ACCOUNT from a user and a bank account name
+     * @param bankAccountName the given bank account name
      * @param user the given user
-     * @return the rib if founded
+     * @return the bank account if founded
      */
-    Optional<BankAccount> getByRibNameAndUser(String ribName, PMBUser user);
+    Optional<BankAccount> getByBankAccountNameAndUser(String bankAccountName, PMBUser user);
 
     /**
-     * gives a RIB from a user, iban and bic
+     * gives a BANK ACCOUNT from a user, iban and bic
      * @param iban the given iban
      * @param bic the given BIC
      * @param user the given user
-     * @return the rib if founded
+     * @return the bank account if founded
      */
     Optional<BankAccount> getByIbanAndBicAndUser(String iban, String bic, PMBUser user);
 
     /**
-     * Verifies data and register a new rib
+     * Verifies data and register a new bank account
      * @param bankAccountDTO data entered by the user
      * @return response of the operation
      */
-    Response processRib(BankAccountDTO bankAccountDTO);
+    Response processBankAccount(BankAccountDTO bankAccountDTO);
 }

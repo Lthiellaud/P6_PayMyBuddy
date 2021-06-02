@@ -42,13 +42,13 @@
               th:action="@{/home/account}" th:object="${accountDTO}">
             <div class="col-md-3">
                 <label for="bankAccount">Bank account</label>
-                <select class="form-select" th:field="*{ribId}" id="bankAccount" required >
+                <select class="form-select" th:field="*{bankAccountId}" id="bankAccount" required >
                     <option selected="selected" value="0">Select a bank account</option>
                     <option th:each="bankAccount: ${bankAccounts}"
-                            th:value="${bankAccount.ribId}"
-                            th:text="${bankAccount.ribName}"></option>
+                            th:value="${bankAccount.bankAccountId}"
+                            th:text="${bankAccount.bankAccountName}"></option>
                 </select>
-                <div style="color: red;" th:if="${#fields.hasErrors('ribId')}" th:errors="*{ribId}">
+                <div style="color: red;" th:if="${#fields.hasErrors('bankAccountId')}" th:errors="*{bankAccountId}">
                     bankAccount Error
                 </div>
             </div>
@@ -97,7 +97,7 @@
                         <td colspan="3">No bank movement registered</td>
                     </tr>
                     <tr th:each="bankMovement: ${bankMovements}">
-                        <td><span th:text="${bankMovement.bankAccount.ribName}"> bankAccount </span></td>
+                        <td><span th:text="${bankMovement.bankAccount.bankAccountName}"> bankAccount </span></td>
                         <td><span th:text="${bankMovement.caption}"> Description </span></td>
                         <td><span th:text="${bankMovement.amount}"> Amount </span>
                         </td>

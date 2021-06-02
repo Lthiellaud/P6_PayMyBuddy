@@ -50,15 +50,15 @@ DEFAULT CHARSET=utf8;
 
 /* Création de la table bank_accounts */
 -- ------------------------ --
--- Liste des rib (bank accounts) des utilisateurs
+-- Liste des comptes bancaires des utilisateurs
 CREATE TABLE `bank_accounts` (
-  `rib_id` bigint NOT NULL AUTO_INCREMENT,
+  `bank_account_id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint NOT NULL,
-  `rib_name` varchar(30) DEFAULT NULL,
-  `account_owner` varchar(30) DEFAULT NULL,
+  `bank_account_name` varchar(30) DEFAULT NULL,
+  `account_holder` varchar(30) DEFAULT NULL,
   `bic` varchar(11) DEFAULT NULL,
   `iban` varchar(34) DEFAULT NULL,
-  PRIMARY KEY (`rib_id`),
+  PRIMARY KEY (`bank_account_id`),
   CONSTRAINT `FK_rib_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) 
 ENGINE=InnoDB 
@@ -89,12 +89,12 @@ DEFAULT CHARSET=utf8;
 -- Si amount est négatif, l'utilisateur vide son compte Pay My Buddy
 CREATE TABLE `bank_movements` (
   `movement_id` bigint NOT NULL AUTO_INCREMENT,
-  `rib_id` bigint NOT NULL,
+  `bank_account_id` bigint NOT NULL,
   `caption` varchar(40) DEFAULT NULL,
   `amount` double DEFAULT NULL,
   `movement_date` datetime DEFAULT NULL,
   PRIMARY KEY (`movement_id`),
-  CONSTRAINT `FK_bank_movements_rib1` FOREIGN KEY (`rib_id`) REFERENCES `bank_accounts` (`rib_id`)
+  CONSTRAINT `FK_bank_movements_rib1` FOREIGN KEY (`bank_account_id`) REFERENCES `bank_accounts` (`bank_account_id`)
 ) 
 ENGINE=InnoDB 
 DEFAULT CHARSET=utf8;

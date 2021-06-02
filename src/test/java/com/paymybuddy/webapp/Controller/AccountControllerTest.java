@@ -6,7 +6,7 @@ import com.paymybuddy.webapp.model.BankMovement;
 import com.paymybuddy.webapp.service.AccountService;
 import com.paymybuddy.webapp.service.BankMovementService;
 import com.paymybuddy.webapp.service.PMBUserService;
-import com.paymybuddy.webapp.service.RibService;
+import com.paymybuddy.webapp.service.BankAccountService;
 import com.paymybuddy.webapp.service.implementation.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class AccountControllerTest {
     private AccountService accountService;
 
     @MockBean
-    private RibService ribService;
+    private BankAccountService bankAccountService;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
@@ -67,15 +67,15 @@ public class AccountControllerTest {
 
     @WithMockUser
     @Test
-    public void manageAccountWithoutChosenRibTest() throws Exception {
+    public void manageAccountWithoutChosenBankAccountTest() throws Exception {
        mockMvc.perform(post("/home/account")
-                    .param("ribId", "0")
+                    .param("bankAccountId", "0")
                     .param("debitCredit", "1")
                     .param("amount", "10"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("accountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("accountDTO", "ribId", "Positive"));
+                .andExpect(model().attributeHasFieldErrorCode("accountDTO", "bankAccountId", "Positive"));
 
 
     }
@@ -84,7 +84,7 @@ public class AccountControllerTest {
     @Test
     public void manageAccountOperationNonSelectedTest() throws Exception {
         mockMvc.perform(post("/home/account")
-                .param("ribId", "1")
+                .param("bankAccountId", "1")
                 .param("debitCredit", "-2")
                 .param("amount", "10"))
                 .andExpect(status().isOk())
@@ -99,7 +99,7 @@ public class AccountControllerTest {
     @Test
     public void manageAccountWithAmount0Test() throws Exception {
         mockMvc.perform(post("/home/account")
-                .param("ribId", "1")
+                .param("bankAccountId", "1")
                 .param("debitCredit", "test")
                 .param("amount", "0"))
                 .andExpect(status().isOk())

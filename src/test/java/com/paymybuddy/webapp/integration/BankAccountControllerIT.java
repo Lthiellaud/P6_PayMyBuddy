@@ -26,10 +26,10 @@ public class BankAccountControllerIT {
 
     @WithUserDetails("tom.buddy@mail.com")
     @Test
-    public void addRibTest() throws Exception {
+    public void addBankAccountTest() throws Exception {
         mockMvc.perform(post("/home/bankAccount")
-                .param("ribName", "My RIB")
-                .param("accountOwner", "Tom Buddy")
+                .param("bankAccountName", "My RIB")
+                .param("accountHolder", "Tom Buddy")
                 .param("countryCode", "fr76")
                 .param("bankCode", "11111")
                 .param("branchCode", "11111")
@@ -45,10 +45,10 @@ public class BankAccountControllerIT {
 
     @WithMockUser
     @Test
-    public void addRibSaveKOTest() throws Exception {
+    public void addBankAccountSaveKOTest() throws Exception {
         mockMvc.perform(post("/home/bankAccount")
-                .param("ribName", "My RIB")
-                .param("accountOwner", "USER")
+                .param("bankAccountName", "My RIB")
+                .param("accountHolder", "USER")
                 .param("countryCode", "fr76")
                 .param("bankCode", "11111")
                 .param("branchCode", "11111")
@@ -64,10 +64,10 @@ public class BankAccountControllerIT {
 
     @WithUserDetails("lol.buddy@mail.com")
     @Test
-    public void addRibWithExistingIBANTest() throws Exception {
+    public void addBankAccountWithExistingIBANTest() throws Exception {
         mockMvc.perform(post("/home/bankAccount")
-                .param("ribName", "My new RIB")
-                .param("accountOwner", "USER")
+                .param("bankAccountName", "My new RIB")
+                .param("accountHolder", "USER")
                 .param("countryCode", "fr76")
                 .param("bankCode", "22222")
                 .param("branchCode", "88888")
@@ -83,10 +83,10 @@ public class BankAccountControllerIT {
 
     @WithUserDetails("lol.buddy@mail.com")
     @Test
-    public void addRibWithExistingNameTest() throws Exception {
+    public void addBankAccountWithExistingNameTest() throws Exception {
         mockMvc.perform(post("/home/bankAccount")
-                .param("ribName", "My Rib")
-                .param("accountOwner", "LOL BUDDY")
+                .param("bankAccountName", "My Rib")
+                .param("accountHolder", "LOL BUDDY")
                 .param("countryCode", "fr76")
                 .param("bankCode", "11111")
                 .param("branchCode", "11111")
@@ -96,7 +96,7 @@ public class BankAccountControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrors("bankAccountDTO", "ribName"));
+                .andExpect(model().attributeHasFieldErrors("bankAccountDTO", "bankAccountName"));
 
     }
 

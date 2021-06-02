@@ -1,9 +1,9 @@
 package com.paymybuddy.webapp.Controller;
 
-import com.paymybuddy.webapp.controller.RibController;
+import com.paymybuddy.webapp.controller.BankAccountController;
 import com.paymybuddy.webapp.model.BankAccount;
 import com.paymybuddy.webapp.service.PMBUserService;
-import com.paymybuddy.webapp.service.RibService;
+import com.paymybuddy.webapp.service.BankAccountService;
 import com.paymybuddy.webapp.service.implementation.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = RibController.class)
+@WebMvcTest(controllers = BankAccountController.class)
 public class BankAccountControllerTest {
 
     @Autowired
@@ -29,13 +29,13 @@ public class BankAccountControllerTest {
     private PMBUserService pmbUserService;
 
     @MockBean
-    private RibService ribService;
+    private BankAccountService bankAccountService;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
 
     @Test
-    public void getRibPageWithoutAuthenticationTest() throws Exception {
+    public void getBankAccountPageWithoutAuthenticationTest() throws Exception {
         mockMvc.perform(get("/home/bankAccount"))
                 .andExpect(status().is(302))
                 .andExpect(redirectedUrlPattern("**/login"));
@@ -44,7 +44,7 @@ public class BankAccountControllerTest {
 
     @WithMockUser
     @Test
-    public void getRibPageTest() throws Exception {
+    public void getBankAccountPageTest() throws Exception {
         List<BankAccount> bankAccountList = new ArrayList<>();
         mockMvc.perform(get("/home/bankAccount"))
                 .andExpect(status().isOk())
@@ -56,10 +56,10 @@ public class BankAccountControllerTest {
 
     @WithMockUser
     @Test
-    public void addRibWithBlankNameTest() throws Exception {
+    public void addBankAccountWithBlankNameTest() throws Exception {
         mockMvc.perform(post("/home/bankAccount")
-                .param("ribName", "")
-                .param("accountOwner", "USER")
+                .param("bankAccountName", "")
+                .param("accountHolder", "USER")
                 .param("countryCode", "fr76")
                 .param("bankCode", "11111")
                 .param("branchCode", "11111")
@@ -69,16 +69,16 @@ public class BankAccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "ribName", "NotBlank"));
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "bankAccountName", "NotBlank"));
 
     }
 
     @WithMockUser
     @Test
-    public void addRibWithBlankOwnerTest() throws Exception {
+    public void addBankAccountWithBlankOwnerTest() throws Exception {
         mockMvc.perform(post("/home/bankAccount")
-                .param("ribName", "My RIB")
-                .param("accountOwner", "")
+                .param("bankAccountName", "My RIB")
+                .param("accountHolder", "")
                 .param("countryCode", "fr76")
                 .param("bankCode", "11111")
                 .param("branchCode", "11111")
@@ -88,16 +88,16 @@ public class BankAccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("bankAccountPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "accountOwner", "NotBlank"));
+                .andExpect(model().attributeHasFieldErrorCode("bankAccountDTO", "accountHolder", "NotBlank"));
 
     }
 
     @WithMockUser
     @Test
-    public void addRibWithFormatIssuesTest() throws Exception {
+    public void addBankAccountWithFormatIssuesTest() throws Exception {
         mockMvc.perform(post("/home/bankAccount")
-                .param("ribName", "My RIB")
-                .param("accountOwner", "USER")
+                .param("bankAccountName", "My RIB")
+                .param("accountHolder", "USER")
                 .param("countryCode", "")
                 .param("bankCode", "111112")
                 .param("branchCode", "111k")

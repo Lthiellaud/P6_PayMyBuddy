@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 public class AccountServiceTest {
 
     @MockBean
-    private RibService ribService;
+    private BankAccountService bankAccountService;
 
     @MockBean
     private PMBUserService pmbUserService;
@@ -51,26 +51,26 @@ public class AccountServiceTest {
         user.setBalance(400.0);
 
         bankAccount = new BankAccount();
-        bankAccount.setRibId(1L);
+        bankAccount.setBankAccountId(1L);
         bankAccount.setUser(user);
         //bankAccount.setBankMovements();
 
         accountDTO = new AccountDTO();
-        accountDTO.setRibId(1L);
+        accountDTO.setBankAccountId(1L);
         accountDTO.setDebitCredit(-1);
         accountDTO.setAmount(100.0);
     }
 
     @Test
     public void operateMovementTest() {
-        when(ribService.getById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountService.getById(1L)).thenReturn(Optional.of(bankAccount));
         when(bankMovementService.createMovement(any(BankMovement.class))).thenReturn(new BankMovement());
         when(callBankService.sendBankMovement(any(BankExchangeDTO.class))).thenReturn(Response.OK);
         when(pmbUserService.updateUserBalance(user, -100.0)).thenReturn(user);
 
         Response response = accountService.operateMovement(accountDTO);
 
-        verify(ribService, times(1)).getById(1L);
+        verify(bankAccountService, times(1)).getById(1L);
         verify(bankMovementService, times(1)).createMovement(any(BankMovement.class));
         verify(callBankService, times(1)).sendBankMovement(any(BankExchangeDTO.class));
         verify(pmbUserService, times(1)).updateUserBalance(user, -100.0);
@@ -80,11 +80,11 @@ public class AccountServiceTest {
 
     @Test
     public void operateMovementDATA_ISSUETest() {
-        when(ribService.getById(1L)).thenReturn(Optional.empty());
+        when(bankAccountService.getById(1L)).thenReturn(Optional.empty());
 
         Response response = accountService.operateMovement(accountDTO);
 
-        verify(ribService, times(1)).getById(1L);
+        verify(bankAccountService, times(1)).getById(1L);
         assertThat(response).isEqualTo(Response.DATA_ISSUE);
 
     }
@@ -92,25 +92,25 @@ public class AccountServiceTest {
     @Test
     public void operateMovementNOT_ENOUGH_MONEYTest() {
         accountDTO.setAmount(1000.0);
-        when(ribService.getById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountService.getById(1L)).thenReturn(Optional.of(bankAccount));
 
         Response response = accountService.operateMovement(accountDTO);
 
-        verify(ribService, times(1)).getById(1L);
+        verify(bankAccountService, times(1)).getById(1L);
         assertThat(response).isEqualTo(Response.NOT_ENOUGH_MONEY);
 
     }
 
     @Test
     public void operateMovementSAVE_KOTest() {
-        when(ribService.getById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountService.getById(1L)).thenReturn(Optional.of(bankAccount));
         when(bankMovementService.createMovement(any(BankMovement.class))).thenReturn(new BankMovement());
         when(callBankService.sendBankMovement(any(BankExchangeDTO.class))).thenReturn(Response.OK);
         when(pmbUserService.updateUserBalance(user, -100.0)).thenThrow(RuntimeException.class);
 
         Response response = accountService.operateMovement(accountDTO);
 
-        verify(ribService, times(1)).getById(1L);
+        verify(bankAccountService, times(1)).getById(1L);
         verify(bankMovementService, times(1)).createMovement(any(BankMovement.class));
         verify(callBankService, times(1)).sendBankMovement(any(BankExchangeDTO.class));
         verify(pmbUserService, times(1)).updateUserBalance(user, -100.0);

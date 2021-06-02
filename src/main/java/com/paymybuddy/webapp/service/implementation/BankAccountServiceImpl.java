@@ -4,10 +4,10 @@ import com.paymybuddy.webapp.model.BankAccount;
 import com.paymybuddy.webapp.model.DTO.BankAccountDTO;
 import com.paymybuddy.webapp.model.PMBUser;
 import com.paymybuddy.webapp.model.constants.Response;
-import com.paymybuddy.webapp.repository.RibRepository;
+import com.paymybuddy.webapp.repository.BankAccountRepository;
 import com.paymybuddy.webapp.service.CheckIbanAndBicService;
 import com.paymybuddy.webapp.service.PMBUserService;
-import com.paymybuddy.webapp.service.RibService;
+import com.paymybuddy.webapp.service.BankAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RibServiceImpl implements RibService {
+public class BankAccountServiceImpl implements BankAccountService {
 
     @Autowired
-    private RibRepository ribRepository;
+    private BankAccountRepository bankAccountRepository;
 
     @Autowired
     private PMBUserService pmbUserService;
@@ -28,51 +28,51 @@ public class RibServiceImpl implements RibService {
     @Autowired
     private CheckIbanAndBicService checkIbanAndBicService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RibServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BankAccountServiceImpl.class);
 
     @Override
-    public List<BankAccount> getRibsByUser(PMBUser user) {
-        return ribRepository.findAllByUser(user);
+    public List<BankAccount> getBankAccountsByUser(PMBUser user) {
+        return bankAccountRepository.findAllByUser(user);
     }
 
     @Override
-    public Optional<BankAccount> getById(Long ribId) {
-        return ribRepository.findById(ribId);
+    public Optional<BankAccount> getById(Long bankAccountId) {
+        return bankAccountRepository.findById(bankAccountId);
     }
 
     @Override
-    public BankAccount createRib(BankAccount bankAccount) {
-        LOGGER.debug("BankAccount to be created name " + bankAccount.getRibName() + "IBAN : " + bankAccount.getIban()
-                + ", BIC : " + bankAccount.getBic() + ", account owner : " + bankAccount.getAccountOwner());
-        return ribRepository.save(bankAccount);
+    public BankAccount createBankAccount(BankAccount bankAccount) {
+        LOGGER.debug("BankAccount to be created name " + bankAccount.getBankAccountName() + "IBAN : " + bankAccount.getIban()
+                + ", BIC : " + bankAccount.getBic() + ", account owner : " + bankAccount.getAccountHolder());
+        return bankAccountRepository.save(bankAccount);
     }
 
     @Override
-    public Optional<BankAccount> getByRibNameAndUser(String ribName, PMBUser user) {
-        return ribRepository.findByRibNameAndUser(ribName, user);
+    public Optional<BankAccount> getByBankAccountNameAndUser(String bankAccountName, PMBUser user) {
+        return bankAccountRepository.findByBankAccountNameAndUser(bankAccountName, user);
     }
 
     @Override
     public Optional<BankAccount> getByIbanAndBicAndUser(String iban, String bic, PMBUser user) {
-        return ribRepository.findByIbanAndBicAndUser(iban, bic, user);
+        return bankAccountRepository.findByIbanAndBicAndUser(iban, bic, user);
     }
 
     private void putUpperCase(BankAccountDTO bankAccountDTO) {
         bankAccountDTO.setAccountCode(bankAccountDTO.getAccountCode().toUpperCase());
-        bankAccountDTO.setAccountOwner(bankAccountDTO.getAccountOwner().toUpperCase());
+        bankAccountDTO.setAccountHolder(bankAccountDTO.getAccountHolder().toUpperCase());
         bankAccountDTO.setCountryCode(bankAccountDTO.getCountryCode().toUpperCase());
         bankAccountDTO.setBic(bankAccountDTO.getBic().toUpperCase());
 
     }
 
     @Override
-    public Response processRib(BankAccountDTO bankAccountDTO) {
+    public Response processBankAccount(BankAccountDTO bankAccountDTO) {
         putUpperCase(bankAccountDTO);
         PMBUser currentUser = pmbUserService.getCurrentUser();
-        if (getByRibNameAndUser(bankAccountDTO.getRibName(), currentUser).isPresent()) {
-            LOGGER.debug(Response.EXISTING_RIB_NAME + "for current user : " + currentUser.getEmail()
-                    + ", rib name : " + bankAccountDTO.getRibName());
-            return Response.EXISTING_RIB_NAME;
+        if (getByBankAccountNameAndUser(bankAccountDTO.getBankAccountName(), currentUser).isPresent()) {
+            LOGGER.debug(Response.EXISTING_BANK_ACCOUNT_NAME + "for current user : " + currentUser.getEmail()
+                    + ", rib name : " + bankAccountDTO.getBankAccountName());
+            return Response.EXISTING_BANK_ACCOUNT_NAME;
         }
         String iban = bankAccountDTO.getCountryCode() + bankAccountDTO.getBankCode()
                 + bankAccountDTO.getBranchCode() + bankAccountDTO.getAccountCode()
@@ -87,16 +87,16 @@ public class RibServiceImpl implements RibService {
         }
         BankAccount newBankAccount = new BankAccount();
         newBankAccount.setUser(currentUser);
-        newBankAccount.setRibName(bankAccountDTO.getRibName());
-        newBankAccount.setAccountOwner(bankAccountDTO.getAccountOwner());
+        newBankAccount.setBankAccountName(bankAccountDTO.getBankAccountName());
+        newBankAccount.setAccountHolder(bankAccountDTO.getAccountHolder());
         newBankAccount.setIban(iban);
         newBankAccount.setBic(bankAccountDTO.getBic());
         try {
-            createRib(newBankAccount);
+            createBankAccount(newBankAccount);
         } catch (Exception e) {
             return Response.SAVE_KO;
         }
-        LOGGER.debug("BankAccount created id " + newBankAccount.getRibId());
+        LOGGER.debug("BankAccount created id " + newBankAccount.getBankAccountId());
 
         return Response.OK;
     }

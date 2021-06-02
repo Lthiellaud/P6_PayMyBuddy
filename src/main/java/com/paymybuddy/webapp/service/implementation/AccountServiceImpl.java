@@ -19,7 +19,7 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-    private RibService ribService;
+    private BankAccountService bankAccountService;
 
     @Autowired
     private PMBUserService pmbUserService;
@@ -34,9 +34,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Response operateMovement(AccountDTO accountDTO) {
-        Optional<BankAccount> r =ribService.getById(accountDTO.getRibId());
+        Optional<BankAccount> r = bankAccountService.getById(accountDTO.getBankAccountId());
         if (!r.isPresent()) {
-            LOGGER.debug(Response.DATA_ISSUE + " for account operation : " + accountDTO.getRibId()
+            LOGGER.debug(Response.DATA_ISSUE + " for account operation : " + accountDTO.getBankAccountId()
                     + ", selected operation : " + accountDTO.getDebitCredit()
                     + ", amount : " + accountDTO.getAmount());
             return Response.DATA_ISSUE;
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
         BankAccount bankAccount = r.get();
 
         if (accountDTO.getAmount()  * accountDTO.getDebitCredit() + bankAccount.getUser().getBalance() < 0) {
-            LOGGER.debug(Response.NOT_ENOUGH_MONEY + " for account operation : " + accountDTO.getRibId()
+            LOGGER.debug(Response.NOT_ENOUGH_MONEY + " for account operation : " + accountDTO.getBankAccountId()
                     + ", selected operation : " + accountDTO.getDebitCredit()
                     + ", amount : " + accountDTO.getAmount());
             return Response.NOT_ENOUGH_MONEY;
@@ -53,12 +53,12 @@ public class AccountServiceImpl implements AccountService {
         try {
             response = registerMovement(accountDTO, bankAccount);
         } catch (Exception e) {
-            LOGGER.debug(response + " for account operation : " + accountDTO.getRibId()
+            LOGGER.debug(response + " for account operation : " + accountDTO.getBankAccountId()
                     + ", selected operation : " + accountDTO.getDebitCredit()
                     + ", amount : " + accountDTO.getAmount());
             return response;
         }
-        LOGGER.debug(response + " for account operation : " + accountDTO.getRibId()
+        LOGGER.debug(response + " for account operation : " + accountDTO.getBankAccountId()
                 + ", selected operation : " + accountDTO.getDebitCredit()
                 + ", amount : " + accountDTO.getAmount());
         return response;

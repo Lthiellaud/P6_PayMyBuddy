@@ -12,29 +12,29 @@ import java.util.Optional;
  * gives access to BankAccount records.
  */
 @Repository
-public interface RibRepository extends JpaRepository<BankAccount, Long> {
+public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
 
     /**
-     * To retrieve a list of RIB from a PMB User.
+     * To retrieve a list of Bank Account from a PMB User.
      * @param user the PMB user
-     * @return The list of RIB
+     * @return The list of Bank Account
      */
     List<BankAccount> findAllByUser(PMBUser user);
 
     /**
-     * To retrieve a RIB from a RIB name and a PMB User.
-     * @param ribName the RIB name
+     * To retrieve a Bank Account from a Bank Account name and a PMB User.
+     * @param bankAccountName the Bank Account name
      * @param user the PMB user
-     * @return The RIB if founded
+     * @return The Bank Account if founded
      */
-    Optional<BankAccount> findByRibNameAndUser(String ribName, PMBUser user);
+    Optional<BankAccount> findByBankAccountNameAndUser(String bankAccountName, PMBUser user);
 
     /**
-     * To retrieve a RIB from a IBAN and a BIC.
+     * To retrieve a Bank Account from a IBAN and a BIC.
      * @param iban the IBAN
      * @param bic the BIC
      * @param user the PMB user
-     * @return the RIB if founded
+     * @return the Bank Account if founded
      */
     Optional<BankAccount> findByIbanAndBicAndUser(String iban, String bic, PMBUser user);
 }

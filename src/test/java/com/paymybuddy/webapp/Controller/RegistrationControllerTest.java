@@ -96,8 +96,7 @@ public class RegistrationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("registrationPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("userDTO", "password", "Size"))
-                .andExpect(model().attributeHasFieldErrorCode("userDTO", "repeatPassword", "Size"));
+                .andExpect(model().attributeHasFieldErrorCode("userDTO", "password", "Size"));
         }
 
     @Test
@@ -111,8 +110,7 @@ public class RegistrationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("registrationPage"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrorCode("userDTO", "password", "Size"))
-                .andExpect(model().attributeHasFieldErrorCode("userDTO", "repeatPassword", "Size"));
+                .andExpect(model().attributeHasFieldErrorCode("userDTO", "password", "Size"));
     }
 
 }

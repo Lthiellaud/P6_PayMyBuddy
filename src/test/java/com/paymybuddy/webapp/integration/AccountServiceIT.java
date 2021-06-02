@@ -45,11 +45,11 @@ public class AccountServiceIT {
 
         accountDTO = new AccountDTO();
         accountDTO.setAmount(10.0);
-        accountDTO.setRibId(1L);
+        accountDTO.setBankAccountId(1L);
         accountDTO.setDebitCredit(-1);
 
         bankAccount = new BankAccount();
-        bankAccount.setRibId(1L);
+        bankAccount.setBankAccountId(1L);
 
 
     }

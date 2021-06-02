@@ -20,9 +20,8 @@ public class PMBUserDTO {
     private String firstName;
     @NotBlank(message = "Last name is mandatory")
     private String lastName;
-    @Size(min = 8, max = 16 , message = "Your password should have between 8 and 16 characters")
-    private String password;
     @Size(min = 8, max = 16, message = "Your password should have between 8 and 16 characters")
+    private String password;
     private String repeatPassword;
 
 

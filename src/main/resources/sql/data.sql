@@ -8,5 +8,5 @@ VALUE ("lol.buddy@mail.com", "Lol", "Buddy1","$2a$10$tx/gdzaivf4E8x5sxF827.8aLO/
 INSERT INTO paymybuddy.connexions ( connexion_name, user_user_id, beneficiary_user_id )
 VALUE ("My connexion", 1, 2);
 
-INSERT INTO paymybuddy.bank_accounts ( user_id, rib_name, account_owner, bic, iban)
+INSERT INTO paymybuddy.bank_accounts ( user_id, bank_account_name, account_holder, bic, iban)
 VALUE (1, "My Rib", "LOL BUDDY", "XXXXXXYY", "FR7622222888889999977777X00");

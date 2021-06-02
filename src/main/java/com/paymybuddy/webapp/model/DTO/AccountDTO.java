@@ -17,7 +17,7 @@ import javax.validation.constraints.Positive;
 @Setter
 public class AccountDTO {
     @Positive(message = "Please, select a bank account")
-    private Long ribId;
+    private Long bankAccountId;
     @Min(value= -1, message = "Please, select an operation")
     private int debitCredit;
     @Positive(message = "Please, enter a positive amount")
