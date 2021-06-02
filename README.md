@@ -1,7 +1,7 @@
 ﻿## Pay My Buddy
 ### Description
 
-Application qui permet aux clients de transférer de l'argent pour gérer leurs finances ou payer leurs amis 
+Application web qui permet aux clients de facilement rembourser ou transférer de l'argent à des amis ou de la famille 
 
 
 ### Solutions technique
@@ -19,6 +19,11 @@ Application qui permet aux clients de transférer de l'argent pour gérer leurs 
 
 ### Documentation
 -   Diagramme de classe UML explicitant la structure des classes du modèle
+![Diagramme de classe](https://github.com/Lthiellaud/P6_PayMyBuddy/blob/develop/Diagramme%20de%20classe.jpg)
 -   Modèle physique de données explicitant la structure des tables de la base de données
-
-### Input
+![Modèle physique](https://github.com/Lthiellaud/P6_PayMyBuddy/blob/develop/Modele%20physique.jpg)
+### Scripts SQL
+-   Création du schéma
+[CreatePayMyBuddyDB.sql](https://github.com/Lthiellaud/P6_PayMyBuddy/blob/develop/src/main/resources/sql/CreatePayMyBuddyDB.sql)
+-   Data pour pré-remplir la base de données (facultatif)
+[data.sql](https://github.com/Lthiellaud/P6_PayMyBuddy/blob/develop/src/main/resources/sql/data.sql)
