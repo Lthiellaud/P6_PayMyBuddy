@@ -34,10 +34,12 @@
             <label for="button1" class="visually-hidden">New bank account</label>
             <a class="btn btn-primary btn-sm w-100" href="/home/bankAccount" role="button" id="button1">Add a bank account</a>
         </div>
-        <p> </p>
         <p class="col-md-12" th:if="${balance != null}" th:utext="${balance}">Balance</p>
     </div>
     <div class="container special">
+        <div class="col-md-12">
+            <h4 th:if="${message != null}" th:utext="${message}" style="color: red;">&nbsp;</h4>
+        </div>
         <form method="post"
               th:action="@{/home/account}" th:object="${accountDTO}">
             <div class="col-md-3">

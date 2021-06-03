@@ -38,8 +38,9 @@
 	</div>
 	<p> </p>
 	<div class="container special">
-		<p></p>
-		<h3 th:if="${message != null}" th:utext="${message}" style="color: red;"></h3>
+		<div class="col-md-12">
+			<h4 th:if="${message != null}" th:utext="${message}" style="color: red;">&nbsp;</h4>
+		</div>
 		<form method="post"
 			  th:action="@{/home/transfer}" th:object="${transfer}">
 

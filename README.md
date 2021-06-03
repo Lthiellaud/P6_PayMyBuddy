@@ -14,6 +14,7 @@ Application web qui permet aux clients de facilement rembourser ou transférer d
     *   MySQL Driver
     *   Lombok
     *   Thymeleaf
+    *   Validate (hibernate)
 -   `Bootstrap`
 -   `Base de données MySQL` (version 8.0.22)
 
