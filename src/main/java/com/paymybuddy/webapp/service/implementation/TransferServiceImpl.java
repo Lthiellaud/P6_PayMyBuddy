@@ -8,6 +8,7 @@ import com.paymybuddy.webapp.service.ConnexionService;
 import com.paymybuddy.webapp.service.PMBUserService;
 import com.paymybuddy.webapp.service.TransactionService;
 import com.paymybuddy.webapp.service.TransferService;
+import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,8 @@ public class TransferServiceImpl implements TransferService {
         }
         Connexion connexion = c.get();
         //check if there is enough money on the user account
-        if (connexion.getPmbUser().getBalance() < transferDTO.getAmount()) {
+        if (connexion.getPmbUser().getBalance() <
+                Precision.round(transferDTO.getAmount() * (100 + COMMISSION_PC)/100, 2)) {
             LOGGER.debug(Response.NOT_ENOUGH_MONEY + " for transfer: " + transferDTO.getConnexionId()
                     + ", description: " + transferDTO.getDescription()
                     + ", amount " + transferDTO.getAmount());
@@ -77,8 +79,9 @@ public class TransferServiceImpl implements TransferService {
         transaction.setTransactionDate(new Date());
         transactionService.createTransaction(transaction);
 
-        //update user balance (subtract amount)
-        pmbUserService.updateUserBalance(connexion.getPmbUser(), transferDTO.getAmount() * (-1));
+        //update user balance (subtract amount * (1 + commission%)
+        pmbUserService.updateUserBalance(connexion.getPmbUser(),
+                Precision.round(transferDTO.getAmount() * (-1) * (100 + COMMISSION_PC)/100, 2));
 
         //update beneficiary balance (add amount)
         pmbUserService.updateUserBalance(connexion.getBeneficiaryUser(), transferDTO.getAmount());

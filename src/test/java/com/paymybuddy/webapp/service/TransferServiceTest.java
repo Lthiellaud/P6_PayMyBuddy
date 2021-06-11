@@ -7,6 +7,7 @@ import com.paymybuddy.webapp.model.Transaction;
 import com.paymybuddy.webapp.model.constants.Response;
 import com.paymybuddy.webapp.service.implementation.TransferServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -74,14 +75,14 @@ public class TransferServiceTest {
         Optional<Connexion> c = Optional.of(connexion);
         when(connexionService.getById(1L)).thenReturn(c);
         when(transactionService.createTransaction(any(Transaction.class))).thenReturn(new Transaction());
-        when(pmbUserService.updateUserBalance(user, -10.0)).thenReturn(user);
+        when(pmbUserService.updateUserBalance(user, -10.05)).thenReturn(user);
         when(pmbUserService.updateUserBalance(beneficiary, 10.0)).thenReturn(beneficiary);
 
         Response response = transferService.processTransfer(transferDTO);
 
         verify(connexionService, times(1)).getById(1L);
         verify(transactionService, times(1)).createTransaction(any(Transaction.class));
-        verify(pmbUserService, times(1)).updateUserBalance(user, -10.0);
+        verify(pmbUserService, times(1)).updateUserBalance(user, -10.05);
         verify(pmbUserService, times(1)).updateUserBalance(beneficiary, 10.0);
         assertThat(response).isEqualTo(Response.OK);
 
@@ -93,14 +94,14 @@ public class TransferServiceTest {
         Optional<Connexion> c = Optional.of(connexion);
         when(connexionService.getById(1L)).thenReturn(c);
         when(transactionService.createTransaction(any(Transaction.class))).thenReturn(new Transaction());
-        when(pmbUserService.updateUserBalance(user, -10.0)).thenReturn(user);
+        when(pmbUserService.updateUserBalance(user, -10.05)).thenReturn(user);
         when(pmbUserService.updateUserBalance(beneficiary, 10.0)).thenThrow(RuntimeException.class);
 
         Response response = transferService.processTransfer(transferDTO);
 
         verify(connexionService, times(1)).getById(1L);
         verify(transactionService, times(1)).createTransaction(any(Transaction.class));
-        verify(pmbUserService, times(1)).updateUserBalance(user, -10.0);
+        verify(pmbUserService, times(1)).updateUserBalance(user, -10.05);
         verify(pmbUserService, times(1)).updateUserBalance(beneficiary, 10.0);
         assertThat(response).isEqualTo(Response.SAVE_KO);
 

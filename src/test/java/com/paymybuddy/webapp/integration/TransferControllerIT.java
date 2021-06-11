@@ -53,11 +53,11 @@ public class TransferControllerIT {
 
     @WithMockUser
     @Test
-    public void transferMoneyWithAmount1000Test() throws Exception {
+    public void transferMoneyWithAmount200ToBigTest() throws Exception {
         mockMvc.perform(post("/home/transfer")
                 .param("connexionId", "1")
                 .param("description", "test")
-                .param("amount", "1000"))
+                .param("amount", "200"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("transferPage"))
                 .andExpect(model().hasErrors())
